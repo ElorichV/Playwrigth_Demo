@@ -1,0 +1,56 @@
+# Archivos de compilación y binarios
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# Archivos de usuario y configuración del IDE
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+.vscode/
+.idea/
+*.DotSettings.user
+
+# Archivos de prueba y reportes
+TestResults/
+Reportes/Videos/
+*.trx
+*.coverage
+*.coveragexml
+
+# DATOS SENSIBLES - NO SUBIR AL REPOSITORIO
+# Estos archivos contienen credenciales, URLs internas y datos confidenciales
+TestData/
+Notas.txt
+
+# Archivos de NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Archivos de caché
+*.cache
+project.assets.json
+project.nuget.cache
+*.nuget.props
+*.nuget.targets
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Archivos temporales
+*.tmp
+*.temp
+*~
