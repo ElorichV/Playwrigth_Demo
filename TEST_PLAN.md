@@ -13,154 +13,172 @@ Establecer un framework de pruebas automatizadas escalable, mantenible y robusto
 
 ### Metodología: E2E de Caja Negra (Black-Box End-to-End Testing)
 Dado que la automatización se realiza sin acceso al código fuente de la plataforma, la estrategia se fundamenta estrictamente en **Pruebas de Caja Negra (Black-Box)**.
-* **Simulación Real:** Se utiliza Microsoft Playwright como motor para simular de forma exacta la experiencia y el comportamiento de un usuario real (un vendedor o agente) operando el sistema desde el navegador.
-* **Validación Integral (E2E):** El framework valida el flujo completo de la aplicación de principio a fin. Al examinar la funcionalidad exclusivamente desde el exterior y evaluar las respuestas de la interfaz, se asegura de facto que la orquestación de todos los componentes internos (Frontend, Backend, APIs y Base de Datos) funcione correctamente en conjunto.
+* **Simulación Real:** Se utiliza Microsoft Playwright como motor para simular de forma exacta la experiencia y el comportamiento de un usuario real operando el sistema desde el navegador.
+* **Validación Integral (E2E):** El framework valida el flujo completo de la aplicación de principio a fin. Al examinar la funcionalidad desde el exterior y evaluar la interfaz, se asegura que la orquestación de todos los componentes internos funcione correctamente.
 
 ### Arquitectura de Pruebas (Separation of Concerns)
-El proyecto divide el esfuerzo de automatización en dos capas para garantizar el mantenimiento y evitar pruebas frágiles:
-* **Pruebas de Humo (Smoke Tests) Estructurales:** Pruebas de navegación rápidas enfocadas en la disponibilidad de la interfaz, menús y ruteo. Garantizan que el sistema "está vivo" y detectan bloqueos de UI (como modales de error por falta de datos).
-* **Pruebas Profundas (Deep Dives) Funcionales:** Pruebas dedicadas exclusivamente a la simulación de reglas de negocio en módulos críticos (ej. Cotizador). Ignoran la validación de la navegación general para centrarse en el ingreso de datos, cálculos y resultados esperados.
+El proyecto divide el esfuerzo de automatización en dos capas:
+* **Pruebas de Humo (Smoke Tests) Estructurales:** Pruebas de navegación rápidas enfocadas en la disponibilidad de la interfaz, menús y ruteo. Detectan errores 500 o bloqueos de UI rápidamente.
+* **Pruebas Profundas (Deep Dives) Funcionales:** Pruebas dedicadas exclusivamente a la simulación de reglas de negocio en módulos críticos (ej. Cotizador). Se centran en el ingreso de datos, cálculos y resultados.
 
 ## 3. Fases de Implementación
-* **Fase 1: Core, Autenticación y Dashboard (✅ Completada)**
-* **Fase 2: Navegación y Enrutamiento (🔄 En Progreso):** Pruebas de interacción con los controles de la interfaz (Hamburguesas) y validación de enlaces del menú lateral.
-* **Fase 3: Deep Dive Funcional - Cotizador (🎯 Siguiente Objetivo):** Automatización exhaustiva del primer módulo crítico de negocio.
+* **Fase 1: Core, Autenticación y Página Principal (✅ Completada)**
+* **Fase 2: Navegación y Enrutamiento (🔄 En Progreso):** Pruebas de interacción con los controles de la interfaz y validación masiva de enlaces de menús laterales.
+* **Fase 3: Deep Dive Funcional - Cotizador y Clientes (🎯 Siguiente Objetivo):** Automatización exhaustiva de los módulos críticos definidos por Sistemas.
 
 ## 4. Stack Tecnológico
 * **Lenguaje:** C# (.NET 10.0)
-* **Framework de Pruebas:** NUnit (Aserciones, Data-Driven Testing y Paralelización).
+* **Framework de Pruebas:** NUnit (Aserciones, Data-Driven Testing).
 * **Automatización UI:** Microsoft Playwright.
 
 ---
 
 # 📊 Matriz de Ejecución de Pruebas
 
-## 🔐 Módulo 1: Autenticación (Login)
-*Validación de reglas de acceso y aislamiento de sesión.*
-
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC01** | Login Exitoso (Redirección a Dashboard) | Data-Driven | ✅ |
-| **TC02** | Login Denegado por Contraseña Incorrecta | Data-Driven | ✅ |
-| **TC03** | Login Denegado por Usuario Inexistente | Data-Driven | ✅ |
-
----
-
-## 📈 Módulo 2: Integridad del Dashboard
-*Validación de carga de datos base sin navegación adicional.*
-
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC04** | Identidad del Agente (Cabecera dinámica) | UI | ✅ |
-| **TC05** | Carga de KPI Base (Presupuesto, Solicitudes, Alcance) | UI | ✅ |
-| **TC06** | Interactividad de Tarjetas de Estado (Círculos Azules) | UI | ✅ |
+## 📖 Glosario de Nomenclatura (Prefijos)
+Para mantener la escalabilidad, los Casos de Prueba (TC) utilizan un sistema de prefijos basado en las consonantes del módulo:
+*   **QA-LGN-** : Login (Autenticación)
+*   **QA-PRN-** : Página Principal (Cabecera, KPIs, Pestañas, Filtros)
+*   **QA-SMK-** : Smoke Tests (Pruebas barredoras de menús laterales)
+*   **QA-CTZ-** : Cotizador
+*   **QA-CLN-** : Cliente Nuevo
+*   **QA-CNT-** : Contratos
+*   **QA-TAB-** : Tablero (Deep Dives)
+*   **QA-GST-** : Gestión Operativa (Deep Dives)
+*   **QA-YDS-** : Ayudas y Herramientas (Deep Dives)
 
 ---
 
-## 🧭 Módulo 3: Navegación Superior
-*Validación de redirecciones a través de los enlaces de KPIs.*
+## 🔐 Módulo 1: Login
+*Validación de acceso y seguridad.*
 
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC07** | Enlaces de KPI Circulares (Clic y Retorno) | Data-Driven | ✅ |
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-LGN-01** | Login Exitoso (Redirección a Página Principal) | ✅ |
+| **QA-LGN-02** | Login Denegado (Contraseña Incorrecta) | 🔄 (Bug) |
+| **QA-LGN-03** | Login Denegado (Usuario Inexistente) | ✅ |
+
+---
+# 🏠 Módulo 2: Página Principal
+*Validación de los elementos fijos, interactividad de KPIs y filtros iniciales.*
+
+### Módulo 2.1 al 2.8: Botones KPI (Circulares)
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-PRN-01** | Navegación y retorno: Contratos en OLBC | ✅ |
+| **QA-PRN-02** | Navegación y retorno: Contratos rechazados | ✅ |
+| **QA-PRN-03** | Navegación y retorno: Contratos en revisión | ✅ |
+| **QA-PRN-04** | Navegación y retorno: Contratos en ingreso | ✅ |
+| **QA-PRN-05** | Navegación y retorno: Estación IC | ✅ |
+| **QA-PRN-06** | Navegación y retorno: Contratos en fulfillment | ✅ |
+| **QA-PRN-07** | Navegación y retorno: Contratos publicados | ✅ |
+| **QA-PRN-08** | Navegación y retorno: Casos | ✅ |
+| **QA-PRN-09** | Navegación y retorno: Al día | ✅ |
+| **QA-PRN-10** | Navegación y retorno: Cambios y correcciones | ✅ |
+
+### Módulo 2.9: Pestañas de Navegación Central
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-PRN-09** | Renderizado de vista al cambiar a "Dashboard" | ✅ |
+| **QA-PRN-10** | Renderizado de vista al cambiar a "Gestión" | ✅ |
+| **QA-PRN-11** | Renderizado de vista al cambiar a "Ayudas" | ✅ |
+
+### Módulo 2.10: Filtros de Sinergia y Cabecera
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-PRN-12** | Integridad de Cabecera (Identidad del Agente) | ✅ |
+| **QA-PRN-13** | Aplicación de filtro: Comercial | ✅ |
+| **QA-PRN-14** | Aplicación de filtro: Residencial | ✅ |
+| **QA-PRN-15** | Aplicación de filtro: Ambos | ✅ |
 
 ---
 
-## 🎛️ Módulo 4: Filtros e Interacción de UI
-*Validaciones asíncronas de la interfaz (Single Page Application).*
+## 🧭 Módulo 3: Menús Laterales (Pruebas de Navegación / Smoke)
+*Confirman que el clic en el enlace lateral abre la pantalla correcta y se puede regresar (Data-Driven).*
 
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC08** | Navegación por Pestañas (Dashboard, Gestión, Ayudas) | UI | ✅ |
-| **TC09** | Filtros de Sinergia (Comercial, Residencial, Ambos) | UI | ✅ |
-| **TC10** | Manejo de Buscador Vacío (Prueba de Cortafuegos) | Seguridad | ✅ |
+### Módulo 3.1: Comportamiento Base
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-SMK-01** | Apertura y Cierre de Menú Hamburguesa | ✅ |
 
----
+### Módulo 3.2: Menú Lateral Tablero
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-SMK-02** | Barredor dinámico de enlaces en Tablero (6 enlaces) | ❌ |
 
-## 🍔 Módulo 5: Enrutamiento General y Contextos (Smoke Tests)
-*Validación de la columna vertebral de navegación, apertura de menús y renderizado contextual desde el Portal del Agente.*
+### Módulo 3.3: Menú Lateral Gestión
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-SMK-03** | Barredor dinámico de enlaces en Gestión (~26 enlaces) | ❌ |
 
-### 5.0 Validación de Interfaz y Contexto
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC11** | Apertura y Cierre de Menú Hamburguesa (Comportamiento Base UI) | UI | 🔄 |
-| **TC12** | Validación de Cambio de Contexto (El menú cambia según la sección activa) | Navegación | 🔄 |
-
-### 5.1 Enrutamiento: Menú Operativo (Portal del Agente)
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC13** | Redirección: Visor de Plantillas | Navegación | 🔄 |
-| **TC14** | Redirección: Cartera Vencida | Navegación | 🔄 |
-| **TC15** | Redirección Base al Módulo "Cotizador" | Navegación | 🔄 |
-
-### 5.2 Enrutamiento: Menú de Gestión de Ventas
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC16** | Redirección: Estadísticas de Citas | Navegación | 🔄 |
-| **TC17** | Redirección: Prospectos TMX | Navegación | 🔄 |
-| **TC18** | Redirección: Creación HTBS | Navegación | 🔄 |
-
-### 5.3 Enrutamiento: Menú de Recursos y Ayuda
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC19** | Redirección: Glosario | Navegación | 🔄 |
-| **TC20** | Redirección: Herramientas | Navegación | 🔄 |
-| **TC21** | Redirección: Proceso de Ventas | Navegación | 🔄 |
+### Módulo 3.4: Menú Lateral Ayudas
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-SMK-04** | Barredor dinámico de enlaces en Ayudas (11 enlaces) | ❌ |
 
 ---
 
-## 💼 Módulo 6: Deep Dive - Menú Dashboard
-*Pruebas E2E de Caja Negra orientadas exclusivamente a las reglas de negocio de las herramientas de trabajo que aparecen al activar la pestaña "Dashboard".*
+## 💼 Módulo 4: Apartado Gestión (Deep Dives Funcionales Core)
+*Pruebas End-to-End de los flujos críticos (Prioridad 1 para Sistemas).*
 
-### 6.1 Submódulo: Cotizador (🔥 Prioridad 1)
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC22** | Carga inicial del formulario de Cotización | Funcional | ❌ |
-| **TC23** | Cotización Básica Exitosa (End-to-End) | E2E | ❌ |
-| **TC24** | Validación de campos obligatorios en Cotizador | Funcional | ❌ |
+### Módulo 4.1: Cotizador
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-CTZ-01** | Carga inicial del formulario y validación de combos | 🔄 |
+| **QA-CTZ-02** | Creación completa de cotización exitosa (E2E) | 🔄 |
+| **QA-CTZ-03** | Validación de campos obligatorios vacíos | ❌ |
 
-### 6.2 Submódulo: Visor de Plantillas
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC25** | *[Por definir: Carga de UI y validación de filtros]* | Funcional | ❌ |
+### Módulo 4.2: Cliente Nuevo
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-CLN-01** | Carga de formulario, validación de RFC y prevención de duplicados | ❌ |
+| **QA-CLN-02** | Alta exitosa de cliente comercial (E2E) | ❌ |
 
-### 6.3 Submódulo: Casos
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC26** | *[Por definir: Consulta y apertura de un caso existente]* | Funcional | ❌ |
-
----
-
-## 📊 Módulo 7: Deep Dive - Menú Gestión
-*Pruebas funcionales para los flujos de seguimiento y prospección de clientes que aparecen al activar la pestaña "Gestión".*
-
-### 7.1 Submódulo: Entrevista
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC27** | *[Por definir: Carga de UI Entrevista]* | Funcional | ❌ |
-
-### 7.2 Submódulo: Prospectos TMX
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC28** | *[Por definir: Flujo de registro de nuevo prospecto]* | Funcional | ❌ |
+### Módulo 4.3: Contratos Creados
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-CNT-01** | Búsqueda y visualización de detalle de contrato | ❌ |
+| **QA-CNT-02** | Descarga/Exportación de reportes | ❌ |
 
 ---
 
-## 📚 Módulo 8: Deep Dive - Menú Ayudas
-*Validación de material de apoyo y herramientas adicionales que aparecen al activar la pestaña "Ayudas".*
+## 📈 Módulo 5: Apartado Tablero (Deep Dives Funcionales)
+*Pruebas profundas de interacción dentro de las pantallas del menú Tablero.*
 
-### 8.1 Submódulo: Herramientas
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC29** | *[Por definir: Carga de UI y descarga de manuales]* | Funcional | ❌ |
+### Módulo 5.1: Comisiones por resultados
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-TAB-01** | Filtrado por periodo y visualización de montos | ❌ |
 
-### 8.2 Submódulo: Glosario
-| ID | Caso de Prueba | Tipo | Estado |
-| :--- | :--- | :---: | :---: |
-| **TC30** | *[Por definir: Búsqueda de términos]* | Funcional | ❌ |
+*(Se agregarán sub-módulos progresivamente)*
+
 ---
 
+## 📚 Módulo 6: Apartado Ayudas (Deep Dives Funcionales)
+*Pruebas de interacción dentro de las pantallas del menú Ayudas.*
+
+### Módulo 6.1: Herramientas y Documentación
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-YDS-01** | Glosario: Búsqueda exacta de términos | ❌ |
+| **QA-YDS-02** | Descarga de software y manuales de apoyo | ❌ |
+
+---
 **Leyenda de Estados:**
-* ✅ **Automatizado y Estable**
-* 🔄 **En Desarrollo / Pruebas**
-* ❌ **Pendiente**
+* ✅ **Automatizado y Estable:** Ejecución regular en verde.
+* 🔄 **En Desarrollo / Cuarentena:** Construyéndose o pausado por bug del sistema.
+* ❌ **Pendiente de Desarrollo:** Mapeado para futuras iteraciones.
+
+---
+---
+
+## 📋 PLANTILLA VACÍA PARA NUEVOS MÓDULOS
+
+## [Icono] Módulo X: [Nombre del Módulo]
+*[Breve descripción de lo que cubre este módulo]*
+
+### Módulo X.1: [Sub-módulo]
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-XXX-01** | [Descripción de la prueba 1] | ❌ |
+| **QA-XXX-02** | [Descripción de la prueba 2] | ❌ |

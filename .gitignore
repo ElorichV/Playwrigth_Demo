@@ -1,56 +1,44 @@
-# Archivos de compilación y binarios
-bin/
-obj/
-*.dll
-*.exe
-*.pdb
+﻿# ==========================================
+# 🛑 DATOS SENSIBLES Y DE PRUEBA (CRÍTICO)
+# ==========================================
+# Archivos JSON que contienen tu información personal y datos reales de clientes
+TestData/ClienteFijo.json
+TestData/QA_GST_ClientesAprobados.json
 
-# Archivos de usuario y configuración del IDE
+# Archivos de configuración local o variables de entorno
+*.local.json
+.env
+
+# ==========================================
+# 🖥️ .NET / C# Base
+# ==========================================
+[Bb]in/
+[Oo]bj/
 *.user
 *.suo
+*.dbmdl
 *.userosscache
 *.sln.docstates
-.vs/
-.vscode/
+
+# ==========================================
+# 🛠️ JetBrains Rider & Visual Studio
+# ==========================================
 .idea/
-*.DotSettings.user
+.vs/
+*.ReSharper
 
-# Archivos de prueba y reportes
+# ==========================================
+# 🎭 Playwright & Reportes de Pruebas
+# ==========================================
+test-results/
+playwright-report/
+blob-report/
+*.log
 TestResults/
-Reportes/Videos/
-*.trx
-*.coverage
-*.coveragexml
 
-# DATOS SENSIBLES - NO SUBIR AL REPOSITORIO
-# Estos archivos contienen credenciales, URLs internas y datos confidenciales
-TestData/
-Notas.txt
-
-# Archivos de NuGet
-*.nupkg
-*.snupkg
+# ==========================================
+# 📦 Paquetes y SO
+# ==========================================
 packages/
-project.lock.json
-project.fragment.lock.json
-artifacts/
-
-# Archivos de caché
-*.cache
-project.assets.json
-project.nuget.cache
-*.nuget.props
-*.nuget.targets
-
-# Archivos de sistema
 .DS_Store
 Thumbs.db
-desktop.ini
-
-# Logs
-*.log
-
-# Archivos temporales
-*.tmp
-*.temp
-*~

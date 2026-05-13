@@ -1,0 +1,554 @@
+﻿[
+  {
+    "CasoId": "QA-GST-COT-001",
+    "Producto": "Facebook CARSO",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-002",
+    "Producto": "Go Banner Abono",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-003",
+    "Producto": "Go Banner Display",
+    "Periodo": "3 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-004",
+    "Producto": "Lead Brand AD Generico",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-005",
+    "Producto": "BLOG ADN",
+    "Periodo": "",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-006",
+    "Producto": "ADN Plus",
+    "Periodo": "6 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-007",
+    "Producto": "Facebook Ads (campanas en redes sociales)",
+    "Periodo": "6 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-008",
+    "Producto": "Facebook Ads  ABONO SACOM",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-009",
+    "Producto": "Medio Google Adwords",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-010",
+    "Producto": "Medio Facebook",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-011",
+    "Producto": "Medio Twitter",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-012",
+    "Producto": "MM BRONCE NE",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-013",
+    "Producto": "MM DIAMANTE NE",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-014",
+    "Producto": "MM PLATA NE",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-015",
+    "Producto": "SMS Menumania",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-016",
+    "Producto": "Paquete Presencia Web(SACOM)",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-017",
+    "Producto": "Sitio ADN PA",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-018",
+    "Producto": "Sitio ADN PA Impulsa",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-019",
+    "Producto": "ADN Plus Pro",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-020",
+    "Producto": "ADN PRO",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-021",
+    "Producto": "Banner CPM",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-022",
+    "Producto": "Banner Categoria Nacional SACOM",
+    "Periodo": "12 meses",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-023",
+    "Producto": "Banner Categoria Regional SACOM",
+    "Periodo": "12 meses",
+    "Suscripcion": "",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-024",
+    "Producto": "BRONCE PLUS (SACOM)",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-025",
+    "Producto": "DIAMANTE (SACOM)",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-026",
+    "Producto": "Paquete digital TELMEX (SACOM)",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-027",
+    "Producto": "Dominio venta independiente",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-028",
+    "Producto": "Dominio Smart para SUSTITUCION",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-029",
+    "Producto": "Correo Smart Adicional",
+    "Periodo": "12 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-030",
+    "Producto": "Sitio ADN Basico (SACOM)",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-031",
+    "Producto": "Listado Adicional tipo BRONCE (SACOM)",
+    "Periodo": "12 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-032",
+    "Producto": "Listado Adicional tipo DIAMANTE (SACOM)",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-033",
+    "Producto": "Listado Adicional tipo LPT (SACOM)",
+    "Periodo": "3 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-034",
+    "Producto": "Listado Adicional tipo PLATA(SACOM)",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-035",
+    "Producto": "Lead Brand Ley de transparencia",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-036",
+    "Producto": "Listado ADN PRO",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-037",
+    "Producto": "Listado ADN PLUS PRO",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-038",
+    "Producto": "Listado ADN Plus",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-039",
+    "Producto": "SA MaxiClick corporativo",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-040",
+    "Producto": "SA MaxiClick CARSO",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-041",
+    "Producto": "SA Maxi Clicks Abono",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-042",
+    "Producto": "SA Maxi Clicks",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-043",
+    "Producto": "SA Maxi Clicks VIP",
+    "Periodo": "3 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-044",
+    "Producto": "SA Maxi Clicks VIP Abono",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-045",
+    "Producto": "Monitoreo de llamadas Digital SACOM",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-046",
+    "Producto": "Monitoreo de llamadas Digital estrategia SACOM",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-047",
+    "Producto": "Sitio ADN con Oferta",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-048",
+    "Producto": "Sitio ADN con Oferta de Servicio",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-049",
+    "Producto": "OOB - Servicios de estrategia(SACOM)",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-050",
+    "Producto": "OOB - Servicios de estrategia VIDEO (SACOM)",
+    "Periodo": "",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-051",
+    "Producto": "Sitio ADN (SACOM)",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-052",
+    "Producto": "PLATA (SACOM)",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-053",
+    "Producto": "Digitalizado Pro",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-054",
+    "Producto": "Digitalizado Plus",
+    "Periodo": "12 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-055",
+    "Producto": "Digitalizado lite",
+    "Periodo": "12 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-056",
+    "Producto": "Online ADN",
+    "Periodo": "12 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-057",
+    "Producto": "Online",
+    "Periodo": "12 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-058",
+    "Producto": "Online PA",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-059",
+    "Producto": "RPIP (SA.com)",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-060",
+    "Producto": "SA Servicio",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-061",
+    "Producto": "Social Content",
+    "Periodo": "12 meses",
+    "Suscripcion": "Sin suscripción",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-062",
+    "Producto": "Staff adicional (1 a 4) CRM",
+    "Periodo": "12 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-063",
+    "Producto": "Staff adicional ilimitado CRM",
+    "Periodo": "12 meses",
+    "Suscripcion": "Con suscripción",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-064",
+    "Producto": "Sitio ADN con Tienda en línea (DIY)",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-065",
+    "Producto": "Sitio Duda con tienda",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-066",
+    "Producto": "Sitio dummy pruebas sistemas",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Crédito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-067",
+    "Producto": "Sitio servicios de estrategia",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Cuenta CLABE",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-068",
+    "Producto": "Sitio ADN",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Tarjeta de Débito",
+    "Leyendas": []
+  },
+  {
+    "CasoId": "QA-GST-COT-069",
+    "Producto": "SMS",
+    "Periodo": "",
+    "Suscripcion": "",
+    "MetodoPago": "Factura Directa ADSA",
+    "Leyendas": []
+  }
+]

@@ -1,0 +1,26 @@
+﻿[
+  {
+    "casoId": "QA-LGN-01",
+    "usuario": "sashenka.olais",
+    "password": "P1nB0x",
+    "debeSerExitoso": true,
+    "MensajeEsperado": "",
+    "agenteEsperado": "Olais Navarro, Sashenka Natasha"
+  },
+  {
+    "casoId": "QA-LGN-02",
+    "usuario": "abilene.macias",
+    "password": "ClaveFalsaSuperMala123",
+    "debeSerExitoso": false,
+    "MensajeEsperado": "La contraseña es incorrecta.",
+    "agenteEsperado": ""
+  },
+  {
+    "casoId": "QA-LGN-03",
+    "usuario": "sashenkaolais",
+    "password": "P1nB0x",
+    "debeSerExitoso": false,
+    "MensajeEsperado": "No es un usuario autorizado.",
+    "agenteEsperado": ""
+  }
+]

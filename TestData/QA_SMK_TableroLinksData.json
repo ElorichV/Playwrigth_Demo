@@ -1,0 +1,38 @@
+﻿[
+  {
+    "id": "QA-SMK-02.1",
+    "textoEnlace": "Comisiones por resultados",
+    "selectorValidacion": "role=heading[name='Reporte de comisiones por']",
+    "habilitado": true
+  },
+  {
+    "id": "QA-SMK-02.2",
+    "textoEnlace": "Bono Sinergia",
+    "selectorValidacion": "n/a",
+    "habilitado": false
+  },
+  {
+    "id": "QA-SMK-02.3",
+    "textoEnlace": "Comisiones",
+    "selectorValidacion": "role=heading[name='Comisiones']",
+    "habilitado": true
+  },
+  {
+    "id": "QA-SMK-02.4",
+    "textoEnlace": "Tablero",
+    "selectorValidacion": "role=heading[name='Tablero']",
+    "habilitado": true
+  },
+  {
+    "id": "QA-SMK-02.5",
+    "textoEnlace": "Valida dominio",
+    "selectorValidacion": "role=heading[name='Validar Dominio']",
+    "habilitado": true
+  },
+  {
+    "id": "QA-SMK-02.6",
+    "textoEnlace": "¿Cuánto falta para mis",
+    "selectorValidacion": "role=heading[name='¿Cuánto falta para mis']",
+    "habilitado": true
+  }
+]

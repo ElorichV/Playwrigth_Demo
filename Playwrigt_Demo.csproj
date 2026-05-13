@@ -11,6 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Bogus" Version="35.6.5" />
         <PackageReference Include="coverlet.collector" Version="8.0.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,12 +28,26 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="TestData\usuarios.json">
+      <None Update="TestData\QA_LGN_Data.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="TestData\kpis.json">
+      <None Update="TestData\QA_PRN_KpisData.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="TestData\ClienteFijo.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="TestData\Global_Credentials.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="TestData\QA_GST_CatalogoProductos.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Tests\Menu Lateral\ML_Ayuda\" />
+      <Folder Include="Tests\Menu Lateral\ML_Dashboard\" />
     </ItemGroup>
 
 </Project>
