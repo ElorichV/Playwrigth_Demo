@@ -1,21 +1,31 @@
-﻿namespace Playwrigt_Demo.Models;
+﻿using System.Text.Json.Serialization;
+namespace Playwrigt_Demo.Models;
 
 // ---------------------------------------------------------
-// MODELO: ESTRUCTURA DE LOS ENLACES DEL MENÚ
+// MODELO: DATA-DRIVEN PARA ENLACES Y MENÚS
 // ---------------------------------------------------------
 // 🔗 VINCULACIÓN DE ARCHIVOS:
-// Archivos JSON: 
-//   - TestData/QA_SMK_TableroLinksData.json
-//   - TestData/QA_SMK_AyudasLinksData.json
-// Consumido por: 
-//   - Tests/Menu Lateral/QA_SMK_MenuLateral_Dashboard_Tests.cs
-//   - Tests/Menu Lateral/QA_SMK_MenuLateral_Ayudas_Tests.cs
+// Archivos JSON: QA_SMK_TableroLinksData.json y QA_SMK_AyudasLinksData.json
+// Consumido por: Tests del Menú Lateral (Dashboard y Ayudas)
 // ---------------------------------------------------------
+/// <summary>
+/// Modelo utilizado para hacer pruebas de "Smoke" sobre la navegación del menú izquierdo.
+/// Valida si un enlace está roto, deshabilitado o si abre una pestaña externa (Target Blank).
+/// </summary>
 public class LinkTestData
 {
-    public string Id { get; set; } = string.Empty;
-    public string TextoEnlace { get; set; } = string.Empty;
-    public string SelectorValidacion { get; set; } = string.Empty;
-    public bool Habilitado { get; set; }
-    public bool EsExterno { get; set; }
+    [JsonPropertyName("id")]
+    public string Id { get; init; } = string.Empty;
+
+    [JsonPropertyName("textoEnlace")]
+    public string TextoEnlace { get; init; } = string.Empty;
+
+    [JsonPropertyName("selectorValidacion")]
+    public string SelectorValidacion { get; init; } = string.Empty;
+
+    [JsonPropertyName("habilitado")]
+    public bool Habilitado { get; init; }
+
+    [JsonPropertyName("esExterno")]
+    public bool EsExterno { get; init; }
 }

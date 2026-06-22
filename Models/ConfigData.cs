@@ -1,4 +1,5 @@
-﻿namespace Playwrigt_Demo.Models;
+﻿using System.Text.Json.Serialization;
+namespace Playwrigt_Demo.Models;
 
 // ---------------------------------------------------------
 // MODELO: CONFIGURACIÓN GLOBAL DEL AMBIENTE
@@ -7,11 +8,18 @@
 // Archivo JSON: TestData/Global_Credentials.json
 // Consumido por: Core/BaseTest.cs (Método SetupGlobal)
 // ---------------------------------------------------------
-// Descripción: Define la estructura para las credenciales de 
-// acceso base y la URL del entorno de capacitación de Pinbox.
+/// <summary>
+/// Mapea de forma inmutable las credenciales de acceso base y la URL del entorno bajo prueba (QA/UAT).
+/// Actúa como el contrato de infraestructura inicial inyectado globalmente al arrancar el motor.
+/// </summary>
 public class ConfigData
 {
-    public string Url { get; set; } = string.Empty;
-    public string User { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-}// JAMÁS debe ser subido al repositorio (asegurarse de que esté en el .gitignore).
+    [JsonPropertyName("url")]
+    public string Url { get; init; } = string.Empty;
+
+    [JsonPropertyName("user")]
+    public string User { get; init; } = string.Empty;
+
+    [JsonPropertyName("password")]
+    public string Password { get; init; } = string.Empty;
+}

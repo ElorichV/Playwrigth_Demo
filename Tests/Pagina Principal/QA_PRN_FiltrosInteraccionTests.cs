@@ -6,107 +6,72 @@ using System;
 namespace Playwrigt_Demo;
 
 // ---------------------------------------------------------
-// SUITE DE PRUEBAS: INTERACCIÓN Y FILTROS (PÁGINA PRINCIPAL / DASHBOARD)
+// SUITE DE PRUEBAS: INTERACCIÓN Y FILTROS (DASHBOARD)
 // ---------------------------------------------------------
-// Descripción: Valida que los elementos interactivos de la página principal 
-// (pestañas, botones de filtro y barras de búsqueda) respondan correctamente
-// y no provoquen un colapso del sistema ("crash") cuando faltan datos.
+/// <summary>
+/// Ejecuta pruebas de estrés UI sobre los elementos interactivos de la página principal 
+/// (pestañas, filtros dinámicos y algoritmos de búsqueda principal).
+/// </summary>
 [TestFixture]
+[Category("Dashboard")]  
+[Category("Sanity")]     
+[Category("Media")]      
 public class QA_PRN_FiltrosInteraccionTests : BaseTest 
 {
-    // ---------------------------------------------------------
-    // SETUP POR PRUEBA (Preparación del Entorno)
-    // ---------------------------------------------------------
     [SetUp]
     public async Task SetupDashboard()
     {
-        // 1. Inyección de sesión dinámica.
         await LoginDinamico();
-        
-        // 2. CHECK DE SALUD: Verificamos que el DOM se haya renderizado por completo.
-        // NOTA ACTUALIZADA: La tolerancia estricta de 30s ya está delegada al 
-        // framework global en BaseTest.cs para evitar redundancia de timeouts.
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" })).ToBeVisibleAsync();
     }
 
-    // ---------------------------------------------------------
-    // QA-PRN-11 al QA-PRN-13 - Navegación por Pestañas (Validación de Estado)
-    // ---------------------------------------------------------
-    // Descripción: Comprueba que el usuario pueda alternar entre las pestañas 
-    // principales del Dashboard y regresar a la vista original sin perder la interfaz.
     [Test]
     public async Task QA_PRN_11_al_13_NavegacionPorPestanas()
     {
-        LogWriter("Iniciando validación de flujo entre pestañas del Dashboard.");
+        LogWriter("Iniciando validación de flujo de enrutamiento interno (Pestañas).");
+        var pestanas = new[] { "Cartera", "Pendientes", "Tablero" };
 
-        // Clic a pestaña 2 y 3 utilizando el monitor de latencia.
-        await ClickConMonitoreo(Page.Locator("#tab-home-2"), "Cambio a Pestaña 2"); 
-        await Task.Delay(1500); // Pausa necesaria para estabilización de animaciones CSS
-
-        await ClickConMonitoreo(Page.Locator("#tab-home-3"), "Cambio a Pestaña 3");
-        await Task.Delay(1500); 
-
-        // Retorno a la pestaña inicial.
-        await ClickConMonitoreo(Page.Locator("#tab-home-1"), "Retorno a Pestaña 1");
-        
-        // 🚨 DIAGNÓSTICO QA (BUG VISUAL): 
-        // La plataforma inyecta un estilo CSS "hidden" a ciertos elementos cuando el ambiente 
-        // de capacitación no tiene datos, lo que podría romper validaciones de visibilidad estándar.
-        // WORKAROUND: Validamos que la estructura base (#pptoComercial) esté adjunta al DOM.
-        await Expect(Page.Locator("#pptoComercial")).ToBeAttachedAsync();
-        LogWriter("Navegación de pestañas validada satisfactoriamente.");
+        foreach (var pestana in pestanas)
+        {
+            var selector = Page.GetByRole(AriaRole.Link, new() { Name = pestana, Exact = true });
+            await ClickConMonitoreo(selector, $"Pestaña {pestana}");
+            
+            // Verificamos que el contenedor general se mantenga estable en el DOM
+            await Expect(Page.Locator(".content-wrapper").First).ToBeVisibleAsync();
+        }
     }
 
-    // ---------------------------------------------------------
-    // QA-PRN-15 al QA-PRN-17 - Filtros de Sinergia (Validación de Supervivencia)
-    // ---------------------------------------------------------
-    // Descripción: Verifica que los botones de filtro (Residencial, Comercial, Ambos)
-    // operen correctamente sin romper la interfaz de usuario (UI).
     [Test]
     public async Task QA_PRN_15_al_17_FiltrosDeSinergia()
     {
-        LogWriter("Iniciando pruebas de filtros de Sinergia.");
-        
-        // ⚠️ NOTA TÉCNICA: Al no haber datos en ciertos perfiles, la plataforma lanza 
-        // un popup de aviso que el manejador global de BaseTest cierra automáticamente.
+        LogWriter("Iniciando pruebas de renderizado por filtros de Sinergia.");
         var filtros = new[] { "Residencial", "Ambos", "Comercial" };
 
         foreach (var filtro in filtros)
         {
-            LogWriter($"Aplicando filtro: {filtro}");
+            LogWriter($"Inyectando estado de filtro: {filtro}");
             var selector = Page.Locator($"text='{filtro}'").First;
             
-            // Registramos latencia para informar a Sistemas sobre tiempos de respuesta del API de filtros.
             await ClickConMonitoreo(selector, $"Botón Filtro {filtro}");
-            
-            // Confirmamos estabilidad del Dashboard post-filtrado.
             await Expect(Page.Locator("#pptoComercial")).ToBeAttachedAsync();
         }
-        LogWriter("Ciclo de filtros completado.");
     }
 
-    // ---------------------------------------------------------
-    // QA-PRN-18 - Buscador Vacío (Prueba de Estrés / Negative Testing)
-    // ---------------------------------------------------------
-    // Descripción: Inyecta una cadena de texto aleatoria para forzar un escenario 
-    // de "No se encontraron resultados" y valida el manejo elegante del error.
     [Test]
     public async Task QA_PRN_18_BuscadorVacio()
     {
-        LogWriter("Ejecutando prueba negativa en buscador principal.");
+        IgnorarCortafuegosAlertas = true;
+        LogWriter("Ejecutando prueba negativa en el motor de búsqueda principal (Manejo de excepciones visuales).");
         var inputBuscador = Page.GetByPlaceholder("buscar...");
         
-        // Generamos un string único para garantizar una búsqueda sin resultados reales.
+        // Semilla dinámica para garantizar cero colisiones de datos
         string textoFalso = "PruebaQA_" + DateTime.Now.Ticks;
         await inputBuscador.FillAsync(textoFalso);
 
-        // Ejecución de búsqueda con monitoreo.
         await ClickConMonitoreo(Page.GetByRole(AriaRole.Button, new() { Name = "Buscar" }).First, "Ejecutar Búsqueda");
 
-        // 🛡️ FIX DE ARQUITECTURA: 
-        // El manejador global de BaseTest atrapa el modal de "No se encontró información".
-        // Nuestra aserción confirma que la aplicación no se bloqueó y el input sigue disponible.
-        await Expect(inputBuscador).ToBeVisibleAsync();
-        LogWriter("Prueba de estrés de búsqueda finalizada con éxito.");
+        // Aserción directa de prevención de caídas de front-end
+        await Expect(Page.GetByText("No se encontraron resultados", new() { Exact = false }).First).ToBeVisibleAsync();
+        LogWriter("El sistema manejó la excepción de datos vacíos de forma elegante.");
     }
 }

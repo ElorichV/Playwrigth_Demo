@@ -1,22 +1,35 @@
-﻿namespace Playwrigt_Demo.Models;
+﻿using System.Text.Json.Serialization;
+namespace Playwrigt_Demo.Models;
 
 // ---------------------------------------------------------
 // MODELO: DATA-DRIVEN PARA AUTENTICACIÓN E IDENTIDAD
 // ---------------------------------------------------------
 // 🔗 VINCULACIÓN DE ARCHIVOS:
 // Archivo JSON: TestData/QA_LGN_Data.json
-// Consumido por: 
-//   - Tests/Autenticacion/QA_LGN_AutenticacionTests.cs
-//   - Tests/Pagina Principal/QA_PRN_IntegridadDashboardTests.cs
+// Consumido por: Tests de Autenticación y Dashboard
 // ---------------------------------------------------------
-// Descripción: Estructura para validar flujos de login (éxito/error) 
-// y verificar que la identidad del Agente en el Dashboard sea correcta.
+/// <summary>
+/// Estructura para inyectar flujos de login (caminos felices y alternos).
+/// Verifica que las credenciales respondan con el mensaje de error adecuado 
+/// o que el nombre del Agente en el Dashboard coincida con la cuenta ingresada.
+/// </summary>
 public class UsuarioTestData
 {
-    public string CasoId { get; set; } = string.Empty;
-    public string Usuario { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-    public bool DebeSerExitoso { get; set; }
-    public string MensajeEsperado { get; set; } = string.Empty;
-    public string AgenteEsperado { get; set; } = string.Empty;
+    [JsonPropertyName("casoId")]
+    public string CasoId { get; init; } = string.Empty;
+
+    [JsonPropertyName("usuario")]
+    public string Usuario { get; init; } = string.Empty;
+
+    [JsonPropertyName("password")]
+    public string Password { get; init; } = string.Empty;
+
+    [JsonPropertyName("debeSerExitoso")]
+    public bool DebeSerExitoso { get; init; }
+
+    [JsonPropertyName("mensajeEsperado")]
+    public string MensajeEsperado { get; init; } = string.Empty;
+
+    [JsonPropertyName("agenteEsperado")]
+    public string AgenteEsperado { get; init; } = string.Empty;
 }

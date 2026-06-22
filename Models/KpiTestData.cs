@@ -1,18 +1,28 @@
-﻿namespace Playwrigt_Demo.Models;
+﻿using System.Text.Json.Serialization;
+namespace Playwrigt_Demo.Models;
 
 // ---------------------------------------------------------
 // MODELO: DATA-DRIVEN PARA MÉTRICAS (KPIs)
 // ---------------------------------------------------------
 // 🔗 VINCULACIÓN DE ARCHIVOS:
 // Archivo JSON: TestData/QA_PRN_KpisData.json
-// Consumido por: Tests/Pagina Principal/QA_PRN_NavegacionKpisTests.cs
+// Consumido por: Tests/QA_PRN_NavegacionKpisTests.cs
 // ---------------------------------------------------------
-// Descripción: Define la estructura para iterar sobre los botones 
-// circulares del Dashboard y validar la navegación hacia sus detalles.
+/// <summary>
+/// Estructura para iterar sobre los botones circulares del Dashboard (KPIs) 
+/// y validar que la navegación hacia sus detalles redirija correctamente.
+/// </summary>
 public class KpiTestData
 {
-    public string? CasoId { get; set; }
-    public string? Boton { get; set; }
-    public string? TituloEsperado { get; set; }
-    public bool EsId { get; set; }
+    [JsonPropertyName("casoId")]
+    public string CasoId { get; init; } = string.Empty;
+
+    [JsonPropertyName("boton")]
+    public string Boton { get; init; } = string.Empty;
+
+    [JsonPropertyName("tituloEsperado")]
+    public string TituloEsperado { get; init; } = string.Empty;
+
+    [JsonPropertyName("esId")]
+    public bool EsId { get; init; }
 }

@@ -1,44 +1,48 @@
 ﻿# ==========================================
-# 🛑 DATOS SENSIBLES Y DE PRUEBA (CRÍTICO)
+# Carpetas de Compilacion (.NET)
+# ==========================================
+bin/
+Bin/
+obj/
+Obj/
+
+# ==========================================
+# 2. Archivos Sensibles y Credenciales (TestData)
 # ==========================================
 # Archivos JSON que contienen tu información personal y datos reales de clientes
 TestData/ClienteFijo.json
 TestData/QA_GST_ClientesAprobados.json
-
-# Archivos de configuración local o variables de entorno
+TestData/Global_Credentials.json
+TestData/QA_LGN_Data.json
 *.local.json
 .env
 
 # ==========================================
-# 🖥️ .NET / C# Base
+# 3. Reportes y Resultados de Pruebas (Playwrigth / NUnit)
 # ==========================================
-[Bb]in/
-[Oo]bj/
-*.user
-*.suo
+playwright-report/
+test-results/
+TestResults/
+blob-report/
+*.log
+
+
 *.dbmdl
-*.userosscache
-*.sln.docstates
 
 # ==========================================
-# 🛠️ JetBrains Rider & Visual Studio
+# 4. Entonrnos de Desarrollo (Rider / Visual Studio)
 # ==========================================
 .idea/
 .vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 *.ReSharper
+*.sln.DotSettings.user
 
 # ==========================================
-# 🎭 Playwright & Reportes de Pruebas
+# 5. Archivos del Sistema Operativo
 # ==========================================
-test-results/
-playwright-report/
-blob-report/
-*.log
-TestResults/
-
-# ==========================================
-# 📦 Paquetes y SO
-# ==========================================
-packages/
 .DS_Store
 Thumbs.db
