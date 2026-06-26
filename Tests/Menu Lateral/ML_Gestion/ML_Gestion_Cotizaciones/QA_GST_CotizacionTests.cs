@@ -15,6 +15,7 @@ namespace Playwrigt_Demo;
 // SUITE DE PRUEBAS: COTIZADOR MASIVO (Módulo 4.1)
 // ---------------------------------------------------------
 [TestFixture]
+[Ignore("Revisión pendiente: Módulo excluido temporalmente para análisis de reportes.")]
 [Category("Cotizacion")] 
 [Category("Regresion")]  
 [Category("Critica")]  

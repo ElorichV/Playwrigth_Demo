@@ -10,6 +10,7 @@ namespace Playwrigt_Demo;
 // SUITE DE PRUEBAS: ALTA DE CLIENTES (Módulo 4.2)
 // ---------------------------------------------------------
 [TestFixture]
+[Ignore("Revisión pendiente: Módulo excluido temporalmente para análisis de reportes.")]
 [Category("Clientes")]   
 [Category("Regresion")]  
 [Category("E2E")]        

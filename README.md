@@ -1,132 +1,195 @@
-# Framework de Automatización E2E - Pinbox 🚀
+﻿# 🧪 Plan de Pruebas Automatizadas: Proyecto Pinbox
 
-Este repositorio contiene la suite de pruebas automatizadas End-to-End (E2E) para la plataforma **Pinbox** (Sección Amarilla). El framework está desarrollado en **C#** utilizando **Playwright** como motor de automatización, **NUnit** como test runner, y está montado sobre **.NET 10.0**.
-
-El objetivo principal de este proyecto es garantizar la estabilidad de los flujos críticos del sistema mediante pruebas de humo (Smoke Tests) y flujos operativos complejos (Dashboard, Gestión, Clientes y Cotizaciones), asegurando tolerancia a la latencia de red y manejo de comportamiento asíncrono de la interfaz de usuario.
-
----
-
-## 🏗️ Características Principales de la Arquitectura
-
-### 1. BaseTest Centralizado e Inteligente
-Toda la suite de pruebas hereda de una clase base común `BaseTest : PageTest` que automatiza y homogeneiza el ciclo de vida de las pruebas:
-* **Aislamiento de Estado**: Limpieza automática de cookies, `localStorage` y `sessionStorage` antes de iniciar cada test para evitar contaminación de datos entre ejecuciones.
-* **Timeouts Unificados**: Configuración estricta de límites de tiempo de navegación, de contexto y aserciones mediante constantes compartidas (`TIMEOUT_LIMIT`).
-* **Trazabilidad Avanzada**: Generación automática de reportes interactivos, capturas de pantalla (*Screenshots*), árboles de elementos (*Snapshots*) y código fuente (*Sources*) para fallas mediante Playwright Tracing.
-
-### 2. Intercepción Dinámica de Alertas (Cortafuegos de UI)
-Para mitigar la intermitencia provocada por llamadas lentas de la API o modales asíncronos sorpresivos generados por **SweetAlert2**, el framework implementa un vigilante pasivo mediante el uso de `Page.AddLocatorHandlerAsync()`.
-Este mecanismo intercepta y despacha automáticamente en milisegundos las siguientes ventanas emergentes sin romper el hilo de ejecución principal de las pruebas:
-* **Modal de Inactividad / API Lenta**: Detecta el texto *"seguir navegando en Pinbox"* y ejecuta un clic nativo confiable en *"Continuar navegando."*, esperando a que la animación CSS concluya.
-* **Modal de Filtros Vacíos**: Intercepta avisos de *"no contiene información"* dentro del Dashboard, haciendo clic en *"Aceptar"* y controlando el estado de desvanecimiento del elemento en el DOM.
-* **Modal del Cotizador**: Monitorea avisos de *"No se encontraron resultados"* para usuarios nuevos sin histórico, presionando el botón *"OK"* automáticamente para liberar la UI.
-
-### 3. Pruebas Guiadas por Datos (Data-Driven Testing con JSON)
-Separación absoluta entre la lógica de los scripts y la data operativa. La información requerida para los flujos vive dentro del directorio `TestData/` en archivos estructurados en formato **JSON** (Credenciales, Clientes Fijos, KPIs a validar). El framework deserializa dinámicamente esta información durante la inicialización global (`SetupGlobal`).
-
-### 4. Robustez contra Animaciones y Latencia
-Se evita el uso de esperas explícitas genéricas (*flaky waits*). En su lugar, el framework aprovecha el auto-waiting de Playwright combinado con aserciones especializadas de Viewport (`Not.ToBeInViewportAsync`) para lidiar con menús laterales deslizantes y loaders dinámicos (`#divLoading`).
+**Framework:** Playwright + NUnit (C#)
+**Arquitectura:** Page Object Model (POM) / Domain-Driven
+**Entorno:** Capacitación / QA
 
 ---
 
-## 📂 Estructura General del Proyecto
+## 1. Objetivo General
+Establecer un framework de pruebas automatizadas escalable, mantenible y robusto para la plataforma Pinbox, asegurando la integridad estructural de la navegación y validando los flujos de negocio críticos mediante simulaciones End-to-End (E2E).
 
-```text
-Playwrigt_Demo/
-│
-├── Tests/                               # Clases de pruebas organizadas por módulos de negocio
-│   ├── QA_SMK_MenuLateral_UI_Tests.cs    # Pruebas de Humo: Menú hamburguesa, colapsos y UI base
-│   ├── QA_PRN_IntegridadDashboardTests.cs# Validación de KPIs (OLBC, Contratos), filtros de Sinergia y Tabs
-│   ├── QA_CLN_GestionClientesTests.cs    # Flujos de Alta Exitosa (Física/Moral) y validación de campos obligatorios
-│   └── QA_GST_CotizacionTests.cs         # Suite de pruebas para el módulo de Cotizaciones e histórico
-│
-├── TestData/                            # Datos dinámicos de pruebas e identidades (Excluidos de Git)
-│   ├── Global_Credentials.example.json  # Plantilla base para credenciales del sistema
-│   ├── QA_LGN_Data.example.json         # Plantilla base de usuarios para flujos de Login e IAM
-│   └── CatalogoMaestro.json             # Catálogo estático de links, IDs y selectores del sistema
-│
-├── BaseTest.cs                          # Configuración global, inicialización del navegador y LocatorHandlers
-├── Playwrigt_Demo.csproj                # Archivo de definición del proyecto .NET
-└── .gitignore                           # Exclusiones de Git optimizadas para entornos JetBrains/VS
-```
+## 2. Enfoque Estratégico y Metodología ("Clean Code & Scalability")
 
----
+### Metodología: E2E de Caja Negra (Black-Box End-to-End Testing)
+Dado que la automatización se realiza sin acceso al código fuente de la plataforma, la estrategia se fundamenta estrictamente en **Pruebas de Caja Negra (Black-Box)**.
+* **Simulación Real:** Se utiliza Microsoft Playwright como motor para simular de forma exacta la experiencia y el comportamiento de un usuario real operando el sistema desde el navegador. Tolerancia dinámica a la carga del DOM (`WaitForAsync`).
+* **Validación Integral (E2E):** El framework valida el flujo completo de la aplicación de principio a fin. Al examinar la funcionalidad desde el exterior y evaluar la interfaz, se asegura que la orquestación de todos los componentes internos funcione correctamente.
+* **Trazabilidad y Evidencia:** Implementación de `Tracing` global forense y segregación automática de evidencias (Videos, Traces, Logs, Network HAR) organizadas por carpetas según el módulo.
 
-## 🛠️ Requisitos Previos
+### Arquitectura de Pruebas (Separation of Concerns)
+El proyecto divide el esfuerzo de automatización en dos capas:
+* **Pruebas de Humo (Smoke Tests) Estructurales:** Pruebas de navegación rápidas enfocadas en la disponibilidad de la interfaz, menús y ruteo. Detectan errores 500 o bloqueos de UI rápidamente.
+* **Pruebas Profundas (Deep Dives) Funcionales:** Pruebas dedicadas exclusivamente a la simulación de reglas de negocio en módulos críticos. Se centran en el ingreso de datos, manipulación de acordeones, validación de iframes, intercepción de pop-ups y descargas.
 
-Antes de configurar el proyecto, asegúrate de tener instalado lo siguiente en tu máquina local:
-* [SDK de .NET 10.0](https://dotnet.microsoft.com/download)
-* Un IDE compatible: [JetBrains Rider](https://www.jetbrains.com/rider/) (Recomendado) o [Visual Studio 2022](https://visualstudio.microsoft.com/)
-* [Git](https://git-scm.com/) (Instalar con Git Bash en entornos Windows)
+## 3. Fases de Implementación
+* **Fase 1: Core, Autenticación y Página Principal (✅ Completada)**
+* **Fase 2: Navegación, Enrutamiento y Deep Dives Secundarios (🔄 En Progreso):** Estabilización de los módulos de "Tablero" y "Ayudas" con las nuevas aserciones de tolerancia de red.
+* **Fase 3: Deep Dive Funcional - Cotizador y Clientes (🎯 Siguiente Objetivo):** Automatización exhaustiva de los módulos críticos definidos por Sistemas (Actualmente en 🔄 Cuarentena/Ignorados para revisión de logs).
+
+## 4. Stack Tecnológico
+* **Lenguaje:** C# (.NET 10.0)
+* **Framework de Pruebas:** NUnit (Aserciones, Data-Driven Testing, Filtros `[Ignore]`).
+* **Automatización UI:** Microsoft Playwright.
+* **Gestor de Entorno:** Archivo único de credenciales globales (`Global_Credentials.json`) para identidad centralizada.
 
 ---
 
-## ⚙️ Instalación y Configuración Local
+# 📊 Matriz de Ejecución de Pruebas
 
-Sigue estos pasos detallados para montar el entorno de pruebas en tu computadora personal o de trabajo:
+## 📖 Glosario de Nomenclatura (Prefijos y Estados)
+Para mantener la escalabilidad, los Casos de Prueba (TC) utilizan un sistema de prefijos basado en las consonantes del módulo:
+* **QA-LGN-** : Login (Autenticación)
+* **QA-PRN-** : Página Principal (Cabecera, KPIs, Pestañas, Filtros)
+* **QA-SMK-** : Smoke Tests (Pruebas barredoras de menús laterales)
+* **QA-CTZ-** : Cotizador
+* **QA-CLN-** : Cliente Nuevo
+* **QA-CNT-** : Contratos
+* **QA-TBL-** : Tablero (Deep Dives)
+* **QA-GST-** : Gestión Operativa (Deep Dives)
+* **QA-AYD-** : Ayudas y Herramientas (Deep Dives)
 
-### 1. Clonar el repositorio
-Abre tu terminal de confianza (o Git Bash) y ejecuta:
-```bash
-git clone https://github.com/ElorichV/Playwrigth_Demo.git
-cd Playwrigt_Demo
-```
-
-### 2. Configurar los Archivos de Datos (`TestData`)
-Por motivos de seguridad, los archivos reales con contraseñas e identificadores específicos de clientes están excluidos del repositorio a través del `.gitignore`. 
-Para habilitarlos de forma local:
-1.  Ve al directorio `TestData/`.
-2.  Duplica los archivos que terminen en `.example.json`.
-3.  Renombra las copias eliminando el fragmento `.example` (de modo que queden como `Global_Credentials.json`, `QA_LGN_Data.json`, etc.).
-4.  Abre los nuevos archivos JSON y coloca las credenciales válidas y los datos proporcionados por la matriz de negocio (cruces verificados en el sistema **IAM**).
-
-### 3. Limpiar y Compilar la Solución
-Desde tu IDE de preferencia (Rider o Visual Studio), realiza una acción de **Clean Solution** seguido de un **Rebuild Solution**.
-Si prefieres hacerlo mediante la línea de comandos de .NET, ejecuta:
-```bash
-dotnet clean
-dotnet build
-```
-*Este paso restaurará de forma automática todos los paquetes de NuGet declarados (Playwright, NUnit, Text.Json).*
-
-### 4. Instalar los Binarios de los Navegadores
-Playwright requiere sus propios binarios dedicados para ejecutar pruebas de forma aislada. Después de compilar la solución por primera vez, instala los navegadores ejecutando el script nativo generado desde tu terminal:
-
-**En Windows (PowerShell):**
-```powershell
-pwsh bin/Debug/net10.0/playwright.ps1 install
-```
-**En Git Bash / Linux / macOS:**
-```bash
-./bin/Debug/net10.0/playwright.ps1 install
-```
+**Estados de Ejecución:**
+* ✅ **Automatizado y Estable:** Ejecución regular en verde.
+* 🔄 **En Desarrollo / Cuarentena:** Pausado por Bug del sistema o silenciado temporalmente para validación de red y refactorización.
+* ❌ **Pendiente de Desarrollo:** Mapeado para futuras iteraciones.
 
 ---
 
-## 🚀 Ejecución de Pruebas
+## 🔐 Módulo 1: Login
+*Validación de acceso y seguridad del portal.*
 
-Puedes disparar la suite completa de pruebas de diversas maneras:
-
-### Desde el IDE (Rider / Visual Studio)
-1. Abre la ventana del **Unit Tests Explorer** o **Test Explorer**.
-2. Presiona el botón de **Run All** o selecciona una categoría/módulo en específico (por ejemplo, expandir y ejecutar solo `QA_CLN_GestionClientesTests`).
-
-### Desde la Consola de Comandos (.NET CLI)
-Para correr absolutamente toda la suite y generar el reporte por defecto:
-```bash
-dotnet test
-```
+### Módulo 1.1: Autenticación
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-LGN-01** | Login Exitoso (Redirección a Página Principal) | ✅ |
+| **QA-LGN-02** | Login Denegado (Contraseña Incorrecta) | 🔄 |
+| **QA-LGN-03** | Login Denegado (Usuario Inexistente) | ✅ |
 
 ---
 
-## 🔒 Buenas Prácticas del Repositorio y Git
+## 🏠 Módulo 2: Página Principal
+*Validación de los elementos fijos, interactividad de KPIs y filtros iniciales en el Dashboard.*
 
-Para mantener el repositorio limpio y proteger información sensible de la empresa, el archivo `.gitignore` está configurado para omitir rigurosamente:
-* Carpetas de compilación temporales y binarios (`bin/`, `obj/`).
-* Configuraciones locales de los entornos de desarrollo (`.idea/`, `.vs/`, `*.DotSettings.user`).
-* Resultados de ejecuciones anteriores (`test-results/`, `TestResults/`, `playwright-report/`).
-* Archivos reales de datos que contienen tokens o contraseñas en claro (`Global_Credentials.json`, `QA_LGN_Data.json`, `ClienteFijo.json`, `QA_GST_ClientesAprobados.json`).
+### Módulo 2.1: Botones KPI (Circulares)
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-PRN-01** | Navegación y retorno: Contratos en OLBC | ✅ |
+| **QA-PRN-02** | Navegación y retorno: Contratos rechazados | ✅ |
+| **QA-PRN-03** | Navegación y retorno: Contratos en revisión | ✅ |
+| **QA-PRN-04** | Navegación y retorno: Contratos en ingreso | ✅ |
+| **QA-PRN-05** | Navegación y retorno: Estación IC | ✅ |
+| **QA-PRN-06** | Navegación y retorno: Contratos en fulfillment | ✅ |
+| **QA-PRN-07** | Navegación y retorno: Contratos publicados | ✅ |
+| **QA-PRN-08** | Navegación y retorno: Casos | ✅ |
+| **QA-PRN-09** | Navegación y retorno: Al día | ✅ |
+| **QA-PRN-10** | Navegación y retorno: Cambios y correcciones | ✅ |
 
-**⚠️ Nota Importante:** Al crear nuevos archivos JSON con datos sensibles dentro de la carpeta `TestData`, 
-asegúrate siempre de que estén declarados explícitamente en el `.gitignore` antes de realizar un `git commit`. 
-Siempre provee una plantilla `.example.json` con valores genéricos vacíos si cambias la estructura de los mismos.
+### Módulo 2.2: Pestañas de Navegación Central y Buscador
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-PRN-11** | Navegación por pestañas (Dashboard, Gestión, Ayudas) | ✅ |
+| **QA-PRN-12** | Renderizado e intercepción de alertas en Buscador Vacío | ✅ |
+
+### Módulo 2.3: Filtros de Sinergia y Tarjetas de Estado
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-PRN-13** | Integridad de Cabecera (Inyección correcta de Identidad del Agente) | ✅ |
+| **QA-PRN-14** | Validar tarjetas de estado interactivo (No Elaborado, Pendiente) | ✅ |
+| **QA-PRN-15** | Aplicación de filtro dinámico: Comercial, Residencial, Ambos | ✅ |
+
+---
+
+## 🧭 Módulo 3: Menús Laterales (Smoke Tests)
+*Pruebas estructurales que confirman que el clic en el enlace lateral abre la pantalla correcta y no genera errores de servidor.*
+
+### Módulo 3.1: Comportamiento Base
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-SMK-01** | Apertura y Cierre de Menú Toggle (Mismo Botón Hamburguesa) | ✅ |
+
+### Módulo 3.2: Barredores Dinámicos
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-SMK-02** | Barredor dinámico de enlaces en Tablero (6 enlaces) | 🔄 |
+| **QA-SMK-03** | Barredor dinámico de enlaces en Gestión (~26 enlaces) | ✅ |
+| **QA-SMK-04** | Barredor dinámico de enlaces en Ayudas (11 enlaces) | 🔄 |
+
+---
+
+## 💼 Módulo 4: Gestión (Deep Dives Funcionales Core)
+*Pruebas End-to-End de los flujos críticos de captura de datos y cotizaciones.*
+
+### Módulo 4.1: Cotizador
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-CTZ-01** | Carga inicial del formulario y validación de combos | 🔄 |
+| **QA-CTZ-02** | Creación completa de cotización exitosa (E2E) | 🔄 |
+| **QA-CTZ-03** | Validación de campos obligatorios vacíos | 🔄 |
+
+### Módulo 4.2: Cliente Nuevo
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-CLN-01** | Carga de formulario, validación de RFC y prevención de duplicados | 🔄 |
+| **QA-CLN-02** | Alta exitosa de cliente comercial (E2E) | 🔄 |
+
+### Módulo 4.3: Contratos Creados
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-CNT-01** | Búsqueda y visualización de detalle de contrato | ❌ |
+| **QA-CNT-02** | Descarga/Exportación de reportes | ❌ |
+
+---
+
+## 📈 Módulo 5: Tablero (Deep Dives Funcionales)
+*Pruebas profundas de interacción dentro de las pantallas del menú Tablero (Comisiones y Reportes).*
+
+### Módulo 5.1: Comisiones y Reportes
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-TBL-01** | Tablero: Descarga de reporte e integridad de entorno | 🔄 |
+| **QA-TBL-02** | Comisiones: Integridad de datos en todas las comisiones | 🔄 |
+| **QA-TBL-03** | Comisiones: Flujo de descarga Excel y Aclaración | 🔄 |
+| **QA-TBL-04** | Cuánto falta para mis comisiones: Validar Textos Informativos | 🔄 |
+| **QA-TBL-05** | Valida Dominio: Flujos válidos (.com, .com.mx) e inválidos | 🔄 |
+| **QA-TBL-06** | Navegación a Certificación Ventas | 🔄 |
+| **QA-TBL-07** | Validación de Bono Sinergia | 🔄 |
+
+---
+
+## 📚 Módulo 6: Ayudas (Deep Dives Funcionales)
+*Pruebas de interacción, formularios anidados y herramientas visuales dentro del menú Ayudas.*
+
+### Módulo 6.1: Herramientas y Documentación
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-AYD-01** | AppPinbox: Intercepción y validación de descarga de APK | 🔄 |
+| **QA-AYD-02** | Glosario: Navegación y filtro alfabético dinámico | 🔄 |
+| **QA-AYD-03** | Infografías: Manipulación de selectores y carga de imágenes | 🔄 |
+| **QA-AYD-04** | Mapa Mental: Carga de visualizadores complejos | 🔄 |
+| **QA-AYD-05** | Notiventas: Manejo y validación de nueva pestaña (Target='_blank') | 🔄 |
+| **QA-AYD-06** | Performance Sitios ADN: Renderizado de Iframe de PowerBI | 🔄 |
+| **QA-AYD-07** | Preparador Digital: Llenado de formularios y validaciones | 🔄 |
+| **QA-AYD-08** | Proceso de Ventas: Interacción con pestañas/acordeones anidados | 🔄 |
+| **QA-AYD-09** | Productos: Funcionalidad de filtros Checkbox iterativos | 🔄 |
+| **QA-AYD-10** | Herramientas: Visibilidad de enlaces de red (Evitando clicks externos) | 🔄 |
+| **QA-AYD-11** | Velocidad de páginas: Redirección a servicios externos (PageSpeed) | 🔄 |
+
+**Leyenda de Estados:**
+* ✅ **Automatizado y Estable:** Ejecución regular en verde.
+* 🔄 **En Desarrollo / Cuarentena:** Construyéndose o pausado por bug del sistema.
+* ❌ **Pendiente de Desarrollo:** Mapeado para futuras iteraciones.
+
+---
+---
+
+## 📋 PLANTILLA VACÍA PARA NUEVOS MÓDULOS
+
+## [Icono] Módulo X: [Nombre del Módulo]
+*[Breve descripción de lo que cubre este módulo]*
+
+### Módulo X.1: [Sub-módulo]
+| ID | Caso de Prueba | Estado |
+| :--- | :--- | :---: |
+| **QA-XXX-01** | [Descripción de la prueba 1] | ❌ |
+| **QA-XXX-02** | [Descripción de la prueba 2] | ❌ |

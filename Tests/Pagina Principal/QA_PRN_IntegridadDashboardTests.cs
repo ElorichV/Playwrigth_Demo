@@ -1,22 +1,11 @@
 ﻿using System;
 using Microsoft.Playwright;
 using NUnit.Framework;
-using System.IO;
-using System.Text.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
-using Playwrigt_Demo.Models;
 
 namespace Playwrigt_Demo;
 
-// ---------------------------------------------------------
-// SUITE DE PRUEBAS: INTEGRIDAD DE DATOS (DASHBOARD)
-// ---------------------------------------------------------
-/// <summary>
-/// Valida que la información vital del Dashboard principal (KPIs, identidad del usuario, paneles de estado) 
-/// se renderice correctamente en el DOM tras la resolución del inicio de sesión.
-/// </summary>
 [TestFixture]
 [Category("Dashboard")]
 [Category("Smoke")]      
@@ -26,29 +15,26 @@ public class QA_PRN_IntegridadDashboardTests : BaseTest
     [SetUp]
     public async Task SetupDashboard()
     {
+        // Esto iniciará sesión automáticamente con "sinuhe.romo"
         await LoginDinamico();
         await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" })).ToBeVisibleAsync();
     }
 
-    public static IEnumerable<TestCaseData> LeerDatosDashboard()
-    {
-        string rutaJson = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestData", "QA_LGN_Data.json");
-        var json = File.ReadAllText(rutaJson);
-        var usuarios = JsonSerializer.Deserialize<List<UsuarioTestData>>(json)!;
-        
-        var usuarioExitoso = usuarios.FirstOrDefault(u => u.DebeSerExitoso);
-        if (usuarioExitoso != null)
-        {
-            yield return new TestCaseData(usuarioExitoso).SetName("QA_PRN_14_ValidarIdentidadEnDashboard");
-        }
-    }
-
+    // 🚨 TEST REFACTORIZADO Y SIMPLIFICADO
     [Test]
-    [TestCaseSource(nameof(LeerDatosDashboard))]
-    public async Task QA_PRN_14_ValidarIdentidadEnDashboard(UsuarioTestData datos)
+    public async Task QA_PRN_14_ValidarIdentidadEnDashboard()
     {
-        LogWriter("Validando la correcta inyección de la identidad del usuario en la sesión activa.");
-        await Expect(Page.Locator("body")).ToContainTextAsync(datos.AgenteEsperado);
+        // Usamos directamente Config.AgenteEsperado que viene de tu JSON Global
+        LogWriter($"Validando la identidad del usuario en sesión. Buscando: {Config.AgenteEsperado}");
+        
+        // Buscamos el texto exacto agnóstico al HTML y esperamos a que el DOM lo dibuje
+        var elementoUsuario = Page.GetByText(Config.AgenteEsperado).First;
+        
+        // Le damos hasta 15 segundos al servidor para que traiga el nombre y lo pinte
+        await elementoUsuario.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 15000 });
+        
+        // Aserción final
+        await Expect(elementoUsuario).ToBeVisibleAsync();
     }
 
     [Test]
@@ -69,7 +55,6 @@ public class QA_PRN_IntegridadDashboardTests : BaseTest
             
             await Expect(Page.Locator("#pptoComercial")).ToBeVisibleAsync();
             
-            // 🚨 Sincronización Explícita de Estado (No más esperas ciegas)
             await Page.Keyboard.PressAsync("Escape");
             await Page.Locator(".modal-sn").WaitForAsync(new() { State = WaitForSelectorState.Hidden, Timeout = 5000 });
         }

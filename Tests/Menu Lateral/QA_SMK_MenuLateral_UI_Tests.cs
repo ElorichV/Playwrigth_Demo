@@ -27,18 +27,21 @@ public class QA_SMK_MenuLateral_UI_Tests : BaseTest
     [Test]
     public async Task QA_SMK_01_AperturaCierreHamburguesa()
     {
-        LogWriter("Iniciando Prueba atómica: Apertura y Cierre del Menú de Navegación.");
-        var botonMenu = Page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" });
-
-        // ABRIR
-        await ClickConMonitoreo(botonMenu, "Apertura de Menú Lateral");
+        LogWriter("Iniciando Prueba atómica: Apertura y Cierre del Menú usando el mismo botón.");
+    
+        // Identificamos el botón único (el de la hamburguesa)
+        var botonToggle = Page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" });
+        await ClickConMonitoreo(botonToggle, "Apertura de Menú Lateral");
+        // Verificamos que el menú se abrió (el link 'Salir' aparece)
         await Expect(Page.Locator("a:has-text('Salir')").First).ToBeVisibleAsync();
-
-        // CERRAR (Validación de colapso del DOM)
-        var botonCerrar = Page.GetByRole(AriaRole.Button, new() { Name = "Close Menu" });
-        await ClickConMonitoreo(botonCerrar, "Cierre de Menú Lateral");
-        await Expect(Page.Locator("a:has-text('Salir')").First).ToBeHiddenAsync(new() { Timeout = 3000 });
         
-        LogWriter("Animaciones y estados del DOM del menú principal validados.");
+        // Nota: A veces el DOM cambia el nombre del botón de "Open Menu" a "Close Menu" 
+        // al estar abierto. Si es el mismo elemento, usamos el mismo locator.
+        await ClickConMonitoreo(botonToggle, "Cierre de Menú Lateral");
+    
+        // Validamos que el menú se cerró (el link 'Salir' se oculta)
+        await Expect(Page.Locator("a:has-text('Salir')").First).ToBeHiddenAsync(new() { Timeout = 3000 });
+    
+        LogWriter("Apertura y Cierre con botón único validados correctamente.");
     }
 }

@@ -10,14 +10,6 @@ using Playwrigt_Demo.Models;
 
 namespace Playwrigt_Demo;
 
-// ---------------------------------------------------------
-// SUITE DE PRUEBAS: NAVEGACIÓN DATA-DRIVEN DE KPIs
-// ---------------------------------------------------------
-/// <summary>
-/// Valida la integridad del ruteo hacia los detalles de KPIs.
-/// Emplea un patrón de "Muestreo Representativo" (Sampling) para mantener los tiempos de ejecución 
-/// en niveles óptimos de CI/CD sin comprometer la cobertura de código.
-/// </summary>
 [TestFixture]
 [Category("Dashboard")]
 [Category("Regresion")]  
@@ -60,14 +52,29 @@ public class QA_PRN_NavegacionKpisTests : BaseTest
         {
             await ClickConMonitoreo(selectorKpi, $"Acceso a KPI {datos.CasoId}");
             
-            // Aserción del Front-End (Validar que el título esperado se renderice)
-            // ✅ LA CORRECCIÓN: Buscamos un 'span' (texto) que simplemente contenga el título del KPI
-            await Expect(Page.Locator("span").Filter(new() { HasText = datos.TituloEsperado }).First).ToBeVisibleAsync();
+            // 🚨 SOLUCIÓN 1: Esperar a que la consulta de base de datos / red termine
+            try { await Page.WaitForLoadStateAsync(LoadState.NetworkIdle, new() { Timeout = 10000 }); } catch { }
+            
+            // 🚨 SOLUCIÓN 2: Búsqueda agnóstica al HTML (sin forzar que sea un span)
+            var tituloDestino = Page.GetByText(datos.TituloEsperado).First;
+            
+            // Esperamos que el elemento se vuelva visible
+            await tituloDestino.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 15000 });
+            await Expect(tituloDestino).ToBeVisibleAsync();
+            
             LogWriter($"Ruteo al KPI '{datos.TituloEsperado}' completado exitosamente.");
+
+            // 🚨 SOLUCIÓN 3: Regreso seguro al Dashboard para mantener el DOM limpio para el siguiente KPI
+            var botonRegresar = Page.Locator("#back, #back a").First;
+            if (await botonRegresar.IsVisibleAsync())
+            {
+                await ClickConMonitoreo(botonRegresar, "Retorno al Dashboard");
+                await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            }
         }
         catch (System.TimeoutException)
         {
-            // Manejo de Resiliencia: Si la red falla, marcamos un Warning en vez de un Crash mortal.
+            // Manejo de Resiliencia
             Assert.Warn($"[LATENCIA DE RED] El KPI {datos.CasoId} no se cargó a tiempo. Posible cuello de botella en el servicio.");
         }
     }
