@@ -39,8 +39,9 @@ public class QA_SMK_MenuLateral_UI_Tests : BaseTest
         // al estar abierto. Si es el mismo elemento, usamos el mismo locator.
         await ClickConMonitoreo(botonToggle, "Cierre de Menú Lateral");
     
-        // Validamos que el menú se cerró (el link 'Salir' se oculta)
-        await Expect(Page.Locator("a:has-text('Salir')").First).ToBeHiddenAsync(new() { Timeout = 3000 });
+        // Validamos que el menú se cerró (el link 'Salir' se oculta). 3000ms era insuficiente
+        // cuando un SweetAlert del dashboard se cruza justo en el cierre de la animación.
+        await Expect(Page.Locator("a:has-text('Salir')").First).ToBeHiddenAsync(new() { Timeout = 10000 });
     
         LogWriter("Apertura y Cierre con botón único validados correctamente.");
     }

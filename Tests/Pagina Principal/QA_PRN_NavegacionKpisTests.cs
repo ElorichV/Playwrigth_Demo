@@ -10,17 +10,28 @@ using Playwrigt_Demo.Models;
 
 namespace Playwrigt_Demo;
 
+/// <summary>
+/// Valida, con muestreo (primer, medio y último KPI del catálogo de
+/// <c>TestData/QA_PRN_KpisData.json</c>), que los botones circulares del Dashboard redirijan a
+/// su pantalla de detalle y que se pueda regresar. Si un KPI tarda demasiado, la prueba emite una
+/// advertencia (<c>Assert.Warn</c>) en vez de fallar — se trata como posible cuello de botella de
+/// red, no como defecto funcional.
+/// </summary>
 [TestFixture]
 [Category("Dashboard")]
-[Category("Regresion")]  
-[Category("Media")]      
-public class QA_PRN_NavegacionKpisTests : BaseTest 
+[Category("Regresion")]
+[Category("Media")]
+public class QA_PRN_NavegacionKpisTests : BaseTest
 {
     [SetUp]
     public async Task SetupDashboard()
     {
         await LoginDinamico();
-        await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" })).ToBeVisibleAsync();
+        // 🚨 FIX (Bug #3 — confirmado por codegen): se elimina el Expect redundante de "Open Menu".
+        // LoginDinamico() ya lo verifica internamente con timeout de 15s.
+        // Tenerlo aquí también era peligroso: los AddLocatorHandlerAsync NO se disparan durante
+        // un Expect puro (sin acción previa), así que si un SweetAlert aparecía entre las dos
+        // líneas, el handler nunca lo cerraba y el test se colgaba hasta el timeout de 45s.
     }
 
     public static IEnumerable<TestCaseData> LeerDatosKpisMuestreo()
@@ -53,7 +64,7 @@ public class QA_PRN_NavegacionKpisTests : BaseTest
             await ClickConMonitoreo(selectorKpi, $"Acceso a KPI {datos.CasoId}");
             
             // 🚨 SOLUCIÓN 1: Esperar a que la consulta de base de datos / red termine
-            try { await Page.WaitForLoadStateAsync(LoadState.NetworkIdle, new() { Timeout = 10000 }); } catch { }
+            // FIX: NetworkIdle eliminado — el WaitForAsync del título a continuación ya espera hasta 15s
             
             // 🚨 SOLUCIÓN 2: Búsqueda agnóstica al HTML (sin forzar que sea un span)
             var tituloDestino = Page.GetByText(datos.TituloEsperado).First;
@@ -69,7 +80,7 @@ public class QA_PRN_NavegacionKpisTests : BaseTest
             if (await botonRegresar.IsVisibleAsync())
             {
                 await ClickConMonitoreo(botonRegresar, "Retorno al Dashboard");
-                await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+                await Expect(Page.Locator("#tab-home-1")).ToBeVisibleAsync(); // FIX: confirmar retorno al Dashboard
             }
         }
         catch (System.TimeoutException)

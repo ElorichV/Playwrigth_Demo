@@ -14,13 +14,26 @@ namespace Playwrigt_Demo;
 // ---------------------------------------------------------
 // SUITE DE PRUEBAS: COTIZADOR MASIVO (Módulo 4.1)
 // ---------------------------------------------------------
+/// <summary>
+/// Valida el Cotizador de Gestión: <c>QA_CTZ_02_CreacionCompletaDataDriven</c> corre ~69 casos
+/// data-driven (<c>TestData/QA_GST_CotizacionData.json</c>) que cubren la creación completa de
+/// una cotización para distintos productos/periodos/suscripciones/métodos de pago;
+/// <c>QA_CTZ_03_ValidacionCamposVacios</c> valida el bloqueo del formulario vacío. Cada caso se
+/// autentica con un cliente/agente específico del pool (<c>ClientePoolFactory</c>) — ver la nota
+/// de "doble login" más abajo antes de tocar el <c>[SetUp]</c> de esta clase.
+/// </summary>
 [TestFixture]
-[Ignore("Revisión pendiente: Módulo excluido temporalmente para análisis de reportes.")]
 [Category("Cotizacion")] 
 [Category("Regresion")]  
 [Category("Critica")]  
 public class QA_GST_CotizacionTests : BaseTest
 {
+    // 🚨 FIX: esta clase NO usa un [SetUp] con login genérico, a diferencia de otras clases del
+    // proyecto. Cada caso necesita autenticarse con un cliente/agente ESPECÍFICO distinto
+    // (cliente.UsuarioPropietario, vía LoginEspecifico dentro del cuerpo de cada test). Un login
+    // genérico previo aquí dejaba la sesión ya autenticada cuando el test intentaba loguearse de
+    // nuevo, y el campo "Usuario" ya no existía en pantalla → timeout de 45s en casi cada caso.
+    // BaseTest.SetupGlobal() ya deja la página limpia y lista en la pantalla de login para cada test.
     // ---------------------------------------------------------
     // HELPERS Y ALIMENTADORES DE DATOS
     // ---------------------------------------------------------
@@ -62,7 +75,10 @@ public class QA_GST_CotizacionTests : BaseTest
         }
 
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Seleccione Producto" }).ClickAsync();
-        await Page.GetByText(datos.Producto).First.ClickAsync();
+        // 🚨 FIX: Exact=true evita seleccionar el producto equivocado cuando el nombre buscado
+        // es substring de otro (ej. "ADN PRO" también coincide dentro de "Listado ADN PRO").
+        // Sin esto, .First podía aterrizar en cualquiera de los dos según el orden del dropdown.
+        await Page.GetByText(datos.Producto, new() { Exact = true }).First.ClickAsync();
 
         if (config.PeriodosValidos.Any())
             await SeleccionarEnSelectize("Seleccione Periodo", datos.Periodo);
@@ -83,7 +99,7 @@ public class QA_GST_CotizacionTests : BaseTest
     [TestCaseSource(nameof(LeerCasosCotizacion))]
     public async Task QA_CTZ_02_CreacionCompletaDataDriven(CotizacionTestData testCase)
     {
-        var cliente = ClientePoolFactory.ObtenerClienteEnTurno();
+        var cliente = ClientePoolFactory.ObtenerClientePorCaso(testCase.CasoId);
         await LoginEspecifico(cliente.UsuarioPropietario, cliente.PasswordPropietario);
 
         LogWriter($"Cotizando '{testCase.Producto}' para Cliente: {cliente.Nombre} usando Agente: {cliente.UsuarioPropietario}");

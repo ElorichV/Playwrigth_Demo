@@ -4,23 +4,33 @@ using System.Threading.Tasks;
 
 namespace Playwrigt_Demo.Tests.Menu_Lateral.ML_Dashboard.ML_Dashboard_Comisiones;
 
+/// <summary>
+/// Valida el flujo completo de "Comisiones": selección de periodo, apertura del detalle,
+/// descarga del Excel y el flujo de "Aclaración" (selección de anunciante + búsqueda).
+/// </summary>
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 [Category("Dashboard")]
 [Category("Funcional")]
 public class QA_CMS_Comisiones_Tests : BaseTest
 {
+    [SetUp]
+    public async Task ConfiguracionInicial()
+    {
+        await LoginDinamico();
+        await Page.Locator("#tab-home-1").ClickAsync(new() { Force = true });
+    }    
     [Test]
     public async Task QA_CMS_FlujoDescargaExcel_Y_Aclaracion()
     {
         // 1. Navegación base
         await ClickConMonitoreo(Page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }), "Apertura Menú Lateral");
         await ClickConMonitoreo(Page.GetByRole(AriaRole.Link, new() { Name = " Comisiones" }), "Clic en Comisiones");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Expect(Page.Locator("#dropPeriodos")).ToBeVisibleAsync(); // FIX: NetworkIdle → dropdown de periodos visible
 
         // 2. Selección de periodo
         await Page.Locator("#dropPeriodos").SelectOptionAsync(new[] { "2025-22" });
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Expect(Page.Locator("table tbody tr").First).ToBeVisibleAsync(new() { Timeout = 20000 }); // FIX: tabla cargada tras seleccionar periodo
 
         // 3. Interacción con la tabla (Selecciona la primera fila dinámicamente)
         var filaDesplegable = Page.Locator("table tbody tr").First.Locator("a").First;
@@ -40,7 +50,7 @@ public class QA_CMS_Comisiones_Tests : BaseTest
 
         // 5. Flujo de Aclaración
         await ClickConMonitoreo(Page.GetByRole(AriaRole.Button, new() { Name = "Aclaración" }), "Botón Aclaración");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Expect(Page.Locator("#mySelect")).ToBeVisibleAsync(); // FIX: NetworkIdle → panel de aclaración visible
 
         await Page.Locator("#mySelect").SelectOptionAsync(new[] { "1" });
         await Page.GetByRole(AriaRole.Textbox, new() { Name = "Advertiser" }).FillAsync("1");

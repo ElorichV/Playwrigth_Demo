@@ -1,0 +1,437 @@
+using Microsoft.Playwright;
+using System;
+using System.Threading.Tasks;
+
+using var playwright = await Playwright.CreateAsync();
+await using var browser = await playwright.Chromium.LaunchAsync(new()
+{
+    Headless = false,
+});
+var context = await browser.NewContextAsync();
+
+var page = await context.NewPageAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com/?ReturnUrl=https%3a%2f%2fcapacitacionpinbox.seccionamarilla.com%2f%2f%3fAspxAutoDetectCookieSupport%3d1");
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Visor de plantillas" }).ClickAsync();
+var page1 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+var page2 = await page1.RunAndWaitForPopupAsync(async () =>
+{
+    await page1.Locator("iframe").First.ContentFrame.Locator("[id=\"1108993513\"]").ClickAsync();
+});
+await page2.CloseAsync();
+await page1.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Animales y mascotas" }).ClickAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.Locator("#loadModal").ClickAsync();
+await page.Locator("a").Nth(1).ClickAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com/Cliente/VisorPlantillas");
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Animales y mascotas" }).ClickAsync();
+var page3 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page3.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Automotriz" }).ClickAsync();
+var page4 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page4.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Comercio local" }).ClickAsync();
+var page5 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page5.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Comida" }).ClickAsync();
+var page6 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page6.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Comunidad y estilo de vida" }).ClickAsync();
+var page7 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page7.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Educación" }).ClickAsync();
+var page8 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page8.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Eventos" }).ClickAsync();
+var page9 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page9.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Gimnasios y Deporte" }).ClickAsync();
+var page10 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page10.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Landing de leads" }).ClickAsync();
+var page11 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page11.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Legal" }).ClickAsync();
+var page12 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page12.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Profesionales" }).ClickAsync();
+var page13 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page13.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Salud" }).ClickAsync();
+var page14 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Servicios", Exact = true }).ClickAsync();
+var page15 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page14.CloseAsync();
+await page15.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Servicios a domicilio" }).ClickAsync();
+var page16 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page16.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Servicios para la industria" }).ClickAsync();
+var page17 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.Locator(".button_vista_previa").First.ClickAsync();
+});
+await page17.CloseAsync();
+await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Viajes" }).ClickAsync();
+var page18 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Link, new() { Name = "Vista Previa" }).First.ClickAsync();
+});
+await page18.CloseAsync();
+await page.Locator("#back a").ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Documentos" }).ClickAsync();
+await page.Locator("#frmDocSinergia").ContentFrame.GetByRole(AriaRole.Heading, new() { Name = "PRE FOLIO" }).ClickAsync();
+await page.Locator("#frmDocSinergia").ContentFrame.GetByText("Docukeeper PRE FOLIO T").ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+var page19 = await page.RunAndWaitForPopupAsync(async () =>
+{
+    await page.GetByRole(AriaRole.Link, new() { Name = " escáner ADN+" }).ClickAsync();
+});
+await page19.Locator("iframe[name=\"my_iframe\"]").ContentFrame.GetByRole(AriaRole.Cell, new() { Name = "adn plus" }).ClickAsync();
+await page19.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page19.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page19.CloseAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Buscador cliente" }).ClickAsync();
+await page.GetByRole(AriaRole.Heading, new() { Name = "Buscador de clientes" }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Nombre comercial" }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "R.F.C." }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Teléfono" }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "E-mail" }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "C.P." }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Nombre comercial" }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Nombre comercial" }).PressAsync("CapsLock");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Nombre comercial" }).FillAsync("R");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Nombre comercial" }).PressAsync("CapsLock");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Nombre comercial" }).FillAsync("Radix");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Nombre comercial" }).PressAsync("Tab");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "R.F.C." }).PressAsync("CapsLock");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "R.F.C." }).FillAsync("LILA990609F3|");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "R.F.C." }).PressAsync("Tab");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "R.F.C." }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "R.F.C." }).FillAsync("LILA990609F3");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Teléfono" }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Teléfono" }).FillAsync("5542284164");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Teléfono" }).PressAsync("Tab");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "E-mail" }).FillAsync("AXEL.A.LINARES");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "C.P." }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "C.P." }).FillAsync("15400");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "C.P." }).PressAsync("Tab");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Calle y número" }).FillAsync("CAIRO 79");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Calle y número" }).PressAsync("Tab");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Colonia" }).FillAsync("ROMERO RUBIO");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Colonia" }).PressAsync("Tab");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Ciudad" }).FillAsync("CDMX");
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Ciudad" }).PressAsync("CapsLock");
+await page.GetByRole(AriaRole.Button, new() { Name = "Buscar" }).ClickAsync();
+await page.Locator("#divLoading").ClickAsync();
+await page.Locator("#divLoading").ClickAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com//Home/AgenteView?Token=517f7aec&RequestId=51abf4e3");
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Cambios a Digitales" }).ClickAsync();
+await page.Locator("#content-login").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Aceptar" }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Oportunidades" }).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Aplicar" }).ClickAsync();
+await page.GetByText("Con Actividad").ClickAsync();
+await page.GetByRole(AriaRole.Combobox).Filter(new() { HasTextRegex = new Regex("^$") }).ClickAsync();
+await page.GetByText("No results found").ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Seleccione una Campaña" }).ClickAsync();
+await page.GetByRole(AriaRole.Option, new() { Name = "Migración Súper Páginas" }).ClickAsync();
+await page.GetByText("Llamada 0% NESLY MARIANA").ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com//Home/AgenteView?Token=517f7aec&RequestId=1dcccf27");
+await page.GetByRole(AriaRole.Button, new() { Name = "Aceptar" }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Envío de Material" }).ClickAsync();
+await page.GotoAsync("http://propuestas.i.seccionamarilla.com/error.aspx");
+await page.Locator("#content-login").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Aceptar" }).ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = "Folio" }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Asignación" }).ClickAsync();
+await page.GetByText("Tags Con ActividadSin").ClickAsync();
+await page.GetByLabel("Objetivo").SelectOptionAsync(new[] { "1" });
+await page.GetByRole(AriaRole.Button, new() { Name = " Aplicar Filtros" }).ClickAsync();
+await page.GetByText("207571296 VENTILADORES Y").ClickAsync();
+await page.Locator(".modal-dialog.bounceInRight > .modal-content > .modal-header > .pointer-hand > .pb-color-red-4").ClickAsync();
+await page.Locator("#btn-nav0").ClickAsync();
+await page.Locator("#btn-nav0").ClickAsync();
+await page.GetByRole(AriaRole.Link).First.ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Aceptar" }).ClickAsync();
+await page.Locator("#divLoading").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+void page_Dialog_EventHandler(object sender, IDialog dialog)
+{
+    Console.WriteLine($"Dialog message: {dialog.Message}");
+    dialog.DismissAsync();
+    page.Dialog -= page_Dialog_EventHandler;
+}
+page.Dialog += page_Dialog_EventHandler;
+await page.Locator("a").Filter(new() { HasText = "Cartera vencida" }).ClickAsync();
+void page_Dialog1_EventHandler(object sender, IDialog dialog)
+{
+    Console.WriteLine($"Dialog message: {dialog.Message}");
+    dialog.DismissAsync();
+    page.Dialog -= page_Dialog1_EventHandler;
+}
+page.Dialog += page_Dialog1_EventHandler;
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com//Agente/ClientesGestion?Token=517f7aec&RequestId=8ab98f57");
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Movimientos de campaña" }).ClickAsync();
+await page.GetByText("Nombre comercial o Núm Cliente").ClickAsync();
+await page.GetByRole(AriaRole.Textbox, new() { Name = " Nombre comercial o Núm" }).ClickAsync();
+await page.GetByText("Cartera Publicidad Digital.").ClickAsync();
+await page.GetByRole(AriaRole.Link).First.ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Casos" }).ClickAsync();
+await page.GetByRole(AriaRole.Heading, new() { Name = "Casos" }).ClickAsync();
+await page.GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Aceptar" }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Sinergia histórico" }).ClickAsync();
+await page.GetByRole(AriaRole.Dialog, new() { Name = "No se puede mostrar informaci" }).ClickAsync();
+await page.Locator("span").First.ClickAsync();
+await page.GetByRole(AriaRole.Heading, new() { Name = "No se puede mostrar informaci" }).ClickAsync();
+await page.GetByText("Intente nuevamente por favor").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "OK" }).ClickAsync();
+await page.Locator(".clearfix").ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByText("Dashboard").ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.Locator(".fa.fa-bell.fa-2x").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Sinergia histórico" }).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "OK" }).ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Estado de Cuenta Sinergia" }).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Aplicar" }).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "OK" }).ClickAsync();
+await page.Locator("#numeroFolio").ClickAsync();
+await page.Locator("#numeroFolio").FillAsync("124587");
+await page.GetByRole(AriaRole.Button, new() { Name = "Aplicar" }).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "OK" }).ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Cliente nuevo" }).ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Aceptar" }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Clientes Cercanos" }).ClickAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com//Home/AgenteView?Token=517f7aec&RequestId=3f1c6df9");
+await page.Locator("div").Filter(new() { HasText = "×DashboardNo se pudo cargar" }).First.ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Contratos creados" }).ClickAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com//Cliente/ContratosAgente?Token=517f7aec&RequestId=cdb47641");
+await page.GetByRole(AriaRole.Gridcell, new() { Name = "- CAJAS FUERTES OFFITECH" }).ClickAsync();
+await page.GetByRole(AriaRole.Gridcell, new() { Name = "+" }).ClickAsync();
+await page.GetByRole(AriaRole.Gridcell, new() { Name = "+" }).ClickAsync();
+await page.GetByRole(AriaRole.Gridcell, new() { Name = "- 500009938" }).ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Contratos guardados" }).ClickAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com//Cliente/ContratosTemporales?Token=517f7aec&RequestId=97baeadc");
+await page.Locator(".clearfix").ClickAsync();
+await page.GetByRole(AriaRole.Gridcell, new() { Name = "2068" }).ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.Locator("div").Filter(new() { HasText = "Achotegui Serrano, Nesly Mariana lunes, jul. 6, 2026 Mensual Cargando..." }).Nth(2).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Entrevista" }).ClickAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com//Agente/Entrevista?Token=517f7aec&RequestId=be9b588b");
+await page.GetByRole(AriaRole.Heading, new() { Name = "Entrevista Pinbox" }).ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Estadísticas citas" }).ClickAsync();
+await page.GetByRole(AriaRole.Columnheader, new() { Name = "Nombre" }).ClickAsync();
+await page.Locator("#txtFechaIni").ClickAsync();
+await page.Locator("#txtFechaFin").ClickAsync();
+await page.GetByText("Buscar NombreCitasHoras").ClickAsync();
+await page.GetByRole(AriaRole.Cell, new() { Name = "NESLY MARIANA ACHOTEGUI" }).ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Estatus de Productos" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " En producción" }).ClickAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com//Productos/ProdInProgres?rep_id=3050&someparameter=123&tipoUrl=IP&Token=517f7aec&RequestId=6e2e5975");
+await page.GetByText("Libro").ClickAsync();
+await page.GetByText("Digital", new() { Exact = true }).ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Publicados" }).ClickAsync();
+await page.GetByText("Libro").ClickAsync();
+await page.GetByText("Digital", new() { Exact = true }).ClickAsync();
+await page.GetByRole(AriaRole.Tab, new() { Name = "LEPANTO" }).Locator("span").ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Cancelados" }).ClickAsync();
+await page.GetByText("Libro").ClickAsync();
+await page.GetByText("Libro").ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Proceso cancelación" }).ClickAsync();
+await page.GetByText("Libro").ClickAsync();
+await page.GetByText("Digital", new() { Exact = true }).ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Prospectos", Exact = true }).ClickAsync();
+await page.GetByRole(AriaRole.Heading, new() { Name = "Prospectos" }).ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Prospectos TMX" }).ClickAsync();
+await page.GetByRole(AriaRole.Heading, new() { Name = "Prospectos Sinergia" }).Nth(1).ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Aceptar" }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Referencias de contratos" }).ClickAsync();
+await page.GetByRole(AriaRole.Heading, new() { Name = "Referencias contrato" }).ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Aceptar" }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.Locator("a").Filter(new() { HasText = "Reporte venta" }).ClickAsync();
+await page.GetByRole(AriaRole.Heading, new() { Name = "Reporte Venta" }).ClickAsync();
+await page.Locator("#back a").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByText("Gestión").ClickAsync();
+await page.GetByTitle("Aviso Credito").ClickAsync();
+await page.GetByText("Open Menu 0").ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Solicitud de Propuestas" }).ClickAsync();
+await page.Locator("#content-login").ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Valida dominio" }).ClickAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com//Agente/VerificarDominio?Token=517f7aec&RequestId=2d0412bf");
+await page.GetByRole(AriaRole.Heading, new() { Name = "Validar Dominio" }).ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByText("Dashboard").ClickAsync();
+await page.Locator("#close-notification-button").ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByTitle("Vista Panorámica").ClickAsync();
+await page.Locator("div").Filter(new() { HasText = "Vista Panorámica." }).Nth(1).ClickAsync();
+await page.GetByRole(AriaRole.Link).First.ClickAsync();
+await page.GotoAsync("https://capacitacionpinbox.seccionamarilla.com//Home/AgenteView?Token=517f7aec&RequestId=c98a2b23");
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Link, new() { Name = " Prospectos calificados" }).ClickAsync();
+await page.GetByRole(AriaRole.Heading, new() { Name = "Prospectos" }).ClickAsync();
+await page.Locator("#back").GetByRole(AriaRole.Link).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Continuar navegando." }).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Close Menu" }).ClickAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Dashboard" }).CheckAsync();
+await page.GetByRole(AriaRole.Radio, new() { Name = "Gestión" }).CheckAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }).ClickAsync();
+await page.Locator("a").Filter(new() { HasText = "Creación HTBS" }).ClickAsync();
+await page.Locator("a").Filter(new() { HasText = "Creación HTBS" }).ClickAsync();
+await page.GetByRole(AriaRole.Button, new() { Name = "Close Menu" }).ClickAsync();
+await page.CloseAsync();

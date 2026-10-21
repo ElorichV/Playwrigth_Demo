@@ -4,19 +4,30 @@ using System.Threading.Tasks;
 
 namespace Playwrigt_Demo.Tests.Menu_Lateral.ML_Dashboard.ML_Dashboard_Tablero;
 
+/// <summary>
+/// Valida el módulo "Tablero": descarga de reporte (caso activo) y navegación a Certificación
+/// de Ventas (caso en <c>[Ignore]</c> por un 500 conocido del ambiente — ver
+/// <c>docs/PROBLEMAS_CONOCIDOS.md</c>).
+/// </summary>
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 [Category("Dashboard")]
 [Category("Funcional")]
 public class QA_TBL_TableroTests : BaseTest
 {
+    [SetUp]
+    public async Task ConfiguracionInicial()
+    {
+        await LoginDinamico();
+        await Page.Locator("#tab-home-1").ClickAsync(new() { Force = true });
+    }
     [Test]
     public async Task QA_TBL_DescargaReporte_Y_ValidacionEntorno()
     {
         // Navegación base
         await ClickConMonitoreo(Page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }), "Apertura Menú Lateral");
         await ClickConMonitoreo(Page.GetByRole(AriaRole.Link, new() { Name = "Tablero" }), "Clic en Tablero");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Descargar Reporte" })).ToBeVisibleAsync(); // FIX: NetworkIdle → espera determinista
 
         // Prueba de Descarga del Reporte del Tablero
         var download = await Page.RunAndWaitForDownloadAsync(async () =>

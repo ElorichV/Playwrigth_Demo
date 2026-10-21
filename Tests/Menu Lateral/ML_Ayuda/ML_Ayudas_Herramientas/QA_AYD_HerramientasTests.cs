@@ -4,18 +4,34 @@ using System.Threading.Tasks;
 
 namespace Playwrigt_Demo.Tests.Menu_Lateral.ML_Ayudas.ML_Ayudas_Herramientas;
 
+/// <summary>
+/// Valida que los enlaces de "Red Interna" y "Red Externa" (Herramientas) sigan visibles.
+/// A propósito solo verifica visibilidad y no da clic en los enlaces externos, para no navegar
+/// fuera del dominio de PinBox dentro de la suite. El enlace "IAM" de Red Interna dejó de
+/// encontrarse (puede ser un renombre, no confirmado) — ver "Enlace IAM ausente" en
+/// <c>docs/PROBLEMAS_CONOCIDOS.md</c> antes de "corregir" el selector a ciegas.
+/// </summary>
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 [Category("Ayudas"), Category("Funcional")]
 public class QA_AYD_HerramientasTests : BaseTest
 {
+    [SetUp]
+    public async Task ConfiguracionInicial()
+    {
+        await LoginDinamico();
+        await Page.Locator("#tab-home-1").ClickAsync(new() { Force = true });
+        // 🚨 FIX (codegen): el menú lateral muestra Gestión por defecto. Los links de Ayudas
+        // no aparecen en el DOM hasta cambiar a esta sección — causa del timeout 10s.
+        await Page.GetByRole(AriaRole.Radio, new() { Name = "Ayudas" }).CheckAsync();
+    }
     [Test]
     public async Task QA_AYD_ValidarVisibilidadEnlacesHerramientas()
     {
         // 1. Navegación base
         await ClickConMonitoreo(Page.GetByRole(AriaRole.Button, new() { Name = "Open Menu" }), "Abrir Menú Lateral");
         await ClickConMonitoreo(Page.GetByRole(AriaRole.Link, new() { Name = " Herramientas" }), "Clic en Herramientas");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Expect(Page.GetByRole(AriaRole.Tab, new() { Name = "Red Interna" })).ToBeVisibleAsync(); // FIX: NetworkIdle → espera determinista del primer elemento interactivo
 
         // ================================================================
         // 2. VALIDACIÓN DE RED INTERNA (Solo visibilidad)

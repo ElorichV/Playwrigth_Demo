@@ -1,46 +1,44 @@
-﻿# ==========================================
-# Carpetas de Compilacion (.NET)
-# ==========================================
+# ====================================================================
+# 1. CARPETAS DE COMPILACIÓN Y CACHÉ
+# ====================================================================
 bin/
-Bin/
 obj/
-Obj/
+out/
+TestResults/
 
-# ==========================================
-# 2. Archivos Sensibles y Credenciales (TestData)
-# ==========================================
-# Archivos JSON que contienen tu información personal y datos reales de clientes
+# ====================================================================
+# 2. ARCHIVOS SENSIBLES Y CREDENCIALES
+# ====================================================================
 TestData/ClienteFijo.json
-TestData/QA_GST_ClientesAprobados.json
 TestData/Global_Credentials.json
+TestData/QA_GST_ClientesAprobados.json
 TestData/QA_LGN_Data.json
 *.local.json
 .env
 
-# ==========================================
-# 3. Reportes y Resultados de Pruebas (Playwrigth / NUnit)
-# ==========================================
-playwright-report/
-test-results/
-TestResults/
-blob-report/
-*.log
-*.dbmdl
-
-# ==========================================
-# 4. Entonrnos de Desarrollo (Rider / Visual Studio)
-# ==========================================
+# ====================================================================
+# 3. ARCHIVOS DEL IDE (Rider / Visual Studio)
+# ====================================================================
 .idea/
 .vs/
 *.user
 *.suo
-*.userosscache
 *.sln.docstates
-*.ReSharper
-*.sln.DotSettings.user
 
-# ==========================================
-# 5. Archivos del Sistema Operativo
-# ==========================================
-.DS_Store
-Thumbs.db
+# ====================================================================
+# 4. CONFIGURACIÓN LOCAL DE HERRAMIENTAS DE DESARROLLO
+# ====================================================================
+CLAUDE.md
+.claude/
+
+# ====================================================================
+# 5. EVIDENCIAS Y ARTEFACTOS DE PLAYWRIGHT
+# ====================================================================
+Reportes/
+*.webm
+*.har
+*.log
+*trace*.zip
+*.txt
+!docs/*.txt
+playwright-*.zip

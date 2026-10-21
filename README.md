@@ -1,195 +1,197 @@
-﻿# 🧪 Plan de Pruebas Automatizadas: Proyecto Pinbox
+# PinBox E2E Automation Framework
+### Testing & Quality Engineering sobre SPA en React | C# · .NET 9 · Playwright · NUnit
 
-**Framework:** Playwright + NUnit (C#)
-**Arquitectura:** Page Object Model (POM) / Domain-Driven
-**Entorno:** Capacitación / QA
-
----
-
-## 1. Objetivo General
-Establecer un framework de pruebas automatizadas escalable, mantenible y robusto para la plataforma Pinbox, asegurando la integridad estructural de la navegación y validando los flujos de negocio críticos mediante simulaciones End-to-End (E2E).
-
-## 2. Enfoque Estratégico y Metodología ("Clean Code & Scalability")
-
-### Metodología: E2E de Caja Negra (Black-Box End-to-End Testing)
-Dado que la automatización se realiza sin acceso al código fuente de la plataforma, la estrategia se fundamenta estrictamente en **Pruebas de Caja Negra (Black-Box)**.
-* **Simulación Real:** Se utiliza Microsoft Playwright como motor para simular de forma exacta la experiencia y el comportamiento de un usuario real operando el sistema desde el navegador. Tolerancia dinámica a la carga del DOM (`WaitForAsync`).
-* **Validación Integral (E2E):** El framework valida el flujo completo de la aplicación de principio a fin. Al examinar la funcionalidad desde el exterior y evaluar la interfaz, se asegura que la orquestación de todos los componentes internos funcione correctamente.
-* **Trazabilidad y Evidencia:** Implementación de `Tracing` global forense y segregación automática de evidencias (Videos, Traces, Logs, Network HAR) organizadas por carpetas según el módulo.
-
-### Arquitectura de Pruebas (Separation of Concerns)
-El proyecto divide el esfuerzo de automatización en dos capas:
-* **Pruebas de Humo (Smoke Tests) Estructurales:** Pruebas de navegación rápidas enfocadas en la disponibilidad de la interfaz, menús y ruteo. Detectan errores 500 o bloqueos de UI rápidamente.
-* **Pruebas Profundas (Deep Dives) Funcionales:** Pruebas dedicadas exclusivamente a la simulación de reglas de negocio en módulos críticos. Se centran en el ingreso de datos, manipulación de acordeones, validación de iframes, intercepción de pop-ups y descargas.
-
-## 3. Fases de Implementación
-* **Fase 1: Core, Autenticación y Página Principal (✅ Completada)**
-* **Fase 2: Navegación, Enrutamiento y Deep Dives Secundarios (🔄 En Progreso):** Estabilización de los módulos de "Tablero" y "Ayudas" con las nuevas aserciones de tolerancia de red.
-* **Fase 3: Deep Dive Funcional - Cotizador y Clientes (🎯 Siguiente Objetivo):** Automatización exhaustiva de los módulos críticos definidos por Sistemas (Actualmente en 🔄 Cuarentena/Ignorados para revisión de logs).
-
-## 4. Stack Tecnológico
-* **Lenguaje:** C# (.NET 10.0)
-* **Framework de Pruebas:** NUnit (Aserciones, Data-Driven Testing, Filtros `[Ignore]`).
-* **Automatización UI:** Microsoft Playwright.
-* **Gestor de Entorno:** Archivo único de credenciales globales (`Global_Credentials.json`) para identidad centralizada.
+[![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![C#](https://img.shields.io/badge/C%23-12.0-239120?logo=csharp&logoColor=white)](https://docs.microsoft.com/dotnet/csharp/)
+[![Playwright](https://img.shields.io/badge/Playwright-1.58.0-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev/)
+[![NUnit](https://img.shields.io/badge/NUnit-3.14.0-003545?logo=nunit&logoColor=white)](https://nunit.org/)
+[![Target App](https://img.shields.io/badge/Frontend-React_SPA-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Architecture](https://img.shields.io/badge/Pattern-Page_Object_Model_(POM)-orange)](#-arquitectura-de-software-y-patrones)
 
 ---
 
-# 📊 Matriz de Ejecución de Pruebas
+## 📌 Contexto del Proyecto
 
-## 📖 Glosario de Nomenclatura (Prefijos y Estados)
-Para mantener la escalabilidad, los Casos de Prueba (TC) utilizan un sistema de prefijos basado en las consonantes del módulo:
-* **QA-LGN-** : Login (Autenticación)
-* **QA-PRN-** : Página Principal (Cabecera, KPIs, Pestañas, Filtros)
-* **QA-SMK-** : Smoke Tests (Pruebas barredoras de menús laterales)
-* **QA-CTZ-** : Cotizador
-* **QA-CLN-** : Cliente Nuevo
-* **QA-CNT-** : Contratos
-* **QA-TBL-** : Tablero (Deep Dives)
-* **QA-GST-** : Gestión Operativa (Deep Dives)
-* **QA-AYD-** : Ayudas y Herramientas (Deep Dives)
+Framework integral de pruebas **End-to-End (E2E)** desarrollado durante mi servicio social en **Sección Amarilla (Agencia Digital ADN)**.
 
-**Estados de Ejecución:**
-* ✅ **Automatizado y Estable:** Ejecución regular en verde.
-* 🔄 **En Desarrollo / Cuarentena:** Pausado por Bug del sistema o silenciado temporalmente para validación de red y refactorización.
-* ❌ **Pendiente de Desarrollo:** Mapeado para futuras iteraciones.
+El objetivo fue diseñar una solución de automatización robusta y desacoplada para validar la plataforma web corporativa **PinBox** (`capacitacionpinbox.seccionamarilla.com`), una Single Page Application (SPA) construida en **React** utilizada por agentes comerciales y coordinadores para cotizaciones de servicios digitales, gestión de clientes y seguimiento de comisiones.
+
+Como **desarrollador Full Stack**, este proyecto combina la comprensión del ciclo de vida del frontend (re-renders de React, eventos sintéticos, estado asíncrono) con la ingeniería de backend (aislamiento de sesiones, monitoreo de llamadas HTTP, desacoplamiento de datos y manejo de errores 500).
 
 ---
 
-## 🔐 Módulo 1: Login
-*Validación de acceso y seguridad del portal.*
+## 🎯 Retos Técnicos y Decisiones de Ingeniería
 
-### Módulo 1.1: Autenticación
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-LGN-01** | Login Exitoso (Redirección a Página Principal) | ✅ |
-| **QA-LGN-02** | Login Denegado (Contraseña Incorrecta) | 🔄 |
-| **QA-LGN-03** | Login Denegado (Usuario Inexistente) | ✅ |
-
----
-
-## 🏠 Módulo 2: Página Principal
-*Validación de los elementos fijos, interactividad de KPIs y filtros iniciales en el Dashboard.*
-
-### Módulo 2.1: Botones KPI (Circulares)
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-PRN-01** | Navegación y retorno: Contratos en OLBC | ✅ |
-| **QA-PRN-02** | Navegación y retorno: Contratos rechazados | ✅ |
-| **QA-PRN-03** | Navegación y retorno: Contratos en revisión | ✅ |
-| **QA-PRN-04** | Navegación y retorno: Contratos en ingreso | ✅ |
-| **QA-PRN-05** | Navegación y retorno: Estación IC | ✅ |
-| **QA-PRN-06** | Navegación y retorno: Contratos en fulfillment | ✅ |
-| **QA-PRN-07** | Navegación y retorno: Contratos publicados | ✅ |
-| **QA-PRN-08** | Navegación y retorno: Casos | ✅ |
-| **QA-PRN-09** | Navegación y retorno: Al día | ✅ |
-| **QA-PRN-10** | Navegación y retorno: Cambios y correcciones | ✅ |
-
-### Módulo 2.2: Pestañas de Navegación Central y Buscador
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-PRN-11** | Navegación por pestañas (Dashboard, Gestión, Ayudas) | ✅ |
-| **QA-PRN-12** | Renderizado e intercepción de alertas en Buscador Vacío | ✅ |
-
-### Módulo 2.3: Filtros de Sinergia y Tarjetas de Estado
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-PRN-13** | Integridad de Cabecera (Inyección correcta de Identidad del Agente) | ✅ |
-| **QA-PRN-14** | Validar tarjetas de estado interactivo (No Elaborado, Pendiente) | ✅ |
-| **QA-PRN-15** | Aplicación de filtro dinámico: Comercial, Residencial, Ambos | ✅ |
+| Desafío en la Aplicación (React SPA) | Causa Raíz Identificada | Solución de Ingeniería Implementada |
+|---|---|---|
+| **Alertas asíncronas intrusivas (SweetAlert2)** | La SPA dispara popups globales por latencia en APIs de terceros que interceptaban clics. | **`LocatorHandlers` resilientes en segundo plano:** `Page.AddLocatorHandlerAsync` neutraliza alertas sin contaminar los tests ni bloquear el hilo. |
+| **Pérdida de eventos en formularios React** | `FillAsync` inyecta valores en el DOM sin emitir eventos sintéticos de teclado (`onChange`/`onInput`), impidiendo que el código postal desplegara las colonias. | **Tipeo secuencial simulado:** `PressSequentiallyAsync` garantiza el disparo de los listeners de React y la carga dinámica de datos. |
+| **Condiciones de carrera en navegación** | `WaitForLoadState(NetworkIdle)` fallaba por telemetría y llamadas constantes en segundo plano. | **Aserciones deterministas auto-reintentables:** Eliminación de esperas fijas; uso exclusivo de `Expect(locator).ToBeVisibleAsync()`. |
+| **Colisiones de datos y validaciones fiscales** | Validaciones de unicidad de RFC/CURP y estados de clientes en base de datos. | **Data-Driven con Bogus y Hash determinista:** Generación de datos sintéticos válidos y pool de clientes con selección determinista por hash de prueba. |
+| **Doble autenticación en módulos transaccionales** | Las pruebas de Cotizaciones y Clientes ejecutaban un login innecesario encontrando la sesión ya abierta. | **Estrategia dual de Auth:** `LoginDinamico()` para suites estándar y `LoginEspecifico(user, pass)` controlado para casos atómicos. |
 
 ---
 
-## 🧭 Módulo 3: Menús Laterales (Smoke Tests)
-*Pruebas estructurales que confirman que el clic en el enlace lateral abre la pantalla correcta y no genera errores de servidor.*
+## 🏗 Arquitectura de Software y Patrones
 
-### Módulo 3.1: Comportamiento Base
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-SMK-01** | Apertura y Cierre de Menú Toggle (Mismo Botón Hamburguesa) | ✅ |
+El framework está estructurado bajo principios **SOLID** y el patrón **Page Object Model (POM)** con tipado estricto:
 
-### Módulo 3.2: Barredores Dinámicos
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-SMK-02** | Barredor dinámico de enlaces en Tablero (6 enlaces) | 🔄 |
-| **QA-SMK-03** | Barredor dinámico de enlaces en Gestión (~26 enlaces) | ✅ |
-| **QA-SMK-04** | Barredor dinámico de enlaces en Ayudas (11 enlaces) | 🔄 |
+```
+Playwrigt_Demo/
+├── Core/
+│   └── BaseTest.cs            # Motor base: ciclo de vida Playwright, Handlers de SweetAlert,
+│                              # telemetría (ClickConMonitoreo), auth y recolección de evidencias.
+├── Factories/                 # Capa de generación y aprovisionamiento de datos (DDT)
+│   ├── ClienteFactory.cs      # Generador con Bogus (personas físicas/morales con RFC/CURP válidos)
+│   ├── ClientePoolFactory.cs  # Pool con estrategias: Hash determinista, Round-Robin y Aleatorio
+│   └── ProductoFactory.cs     # Catálogo maestro de productos y paquetes comerciales
+├── Models/                    # DTOs fuertemente tipados (deserialización System.Text.Json)
+│   ├── ClienteModel.cs
+│   ├── CotizacionData.cs
+│   └── ConfigData.cs
+├── TestData/                  # Datasets parametrizados en JSON (Data-Driven Testing)
+├── Tests/                     # Suites organizadas por dominio funcional
+│   ├── Autenticacion/         # Flujos de Login (QA-LGN)
+│   ├── Pagina Principal/       # KPIs, métricas de rendimiento y filtros (QA-PRN)
+│   └── Menu Lateral/
+│       ├── ML_Gestion/        # Cotizador (69 casos), Clientes Nuevos y 25 pantallas mapeadas
+│       ├── ML_Dashboard/      # Comisiones, Tablero y validación de dominios
+│       └── ML_Ayuda/          # 11 submódulos de herramientas y soporte
+├── Reportes/                  # Artefactos generados (Videos WebM, Traces, HARs y Logs)
+└── run-smoke-tests.ps1        # Script de automatización PowerShell para ejecución Headless
+```
+
+### Diagrama de Flujo del Framework
+
+```mermaid
+flowchart LR
+    subgraph Data["1. Data Layer"]
+        JSON["TestData (*.json)"] --> Fact["Factories\n(Bogus / Pool)"]
+        Fact --> DTO["DTO Models\n(System.Text.Json)"]
+    end
+
+    subgraph Core["2. Engine & Core"]
+        BT["Core/BaseTest.cs\n(PageTest)"]
+        LH["SweetAlert\nLocatorHandlers"] --> BT
+        Auth["Auth Strategy\n(Dinámica / Específica)"] --> BT
+    end
+
+    subgraph Execution["3. Test Execution"]
+        DTO --> Suites["Suites NUnit\n(Smoke, Regresión, E2E)"]
+        BT --> Suites
+    end
+
+    subgraph Outputs["4. Observability & Artifacts"]
+        Suites --> HTML["TestResults/Reporte.html"]
+        Suites --> Vid["Reportes/Videos/ (*.webm)"]
+        Suites --> Trc["Reportes/Traces/ (*.zip)"]
+        Suites --> Net["Reportes/Network/ (*.har)"]
+    end
+```
+
+---
+
+## 📦 Cobertura Funcional del Negocio
+
+La suite contiene **más de 125 pruebas automatizadas**, cubriendo el flujo operativo completo:
+
+* **Autenticación y Sesiones (`QA-LGN`):** Control del ciclo de vida de tokens, aislamiento entre pruebas (`ClearCookiesAsync`, vaciado de `localStorage`/`sessionStorage`) y validación de roles.
+* **Gestión Comercial & Cotizador (`QA-GST`, `QA-CTZ`):** Cobertura exhaustiva de **69 casos Data-Driven** que parametrizan la cotización de productos digitales (ADN Pro, Sitios ADN, Pauta en Redes, SMS masivos, Campañas Carso).
+* **Alta de Clientes Nuevos (`QA-CLN`):** Formularios complejos con autocompletado reactivo, validaciones fiscales y carga documental.
+* **Disponibilidad de Pantallas Operativas (`QA-VDP` a `QA-HTB`):** Comprobación de disponibilidad sobre 25 pantallas del menú Gestión (Escáner ADN+, Cartera Vencida, Casos, Visor de Plantillas).
+* **Métricas y Comisiones (`QA-PRN`, `QA-CMS`, `QA-TBL`):** Validación de integridad en cálculo de comisiones devengadas, descarga de reportes Excel y validación de KPIs comerciales.
 
 ---
 
-## 💼 Módulo 4: Gestión (Deep Dives Funcionales Core)
-*Pruebas End-to-End de los flujos críticos de captura de datos y cotizaciones.*
+## 📊 Observabilidad y Reportes Multimedia
 
-### Módulo 4.1: Cotizador
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-CTZ-01** | Carga inicial del formulario y validación de combos | 🔄 |
-| **QA-CTZ-02** | Creación completa de cotización exitosa (E2E) | 🔄 |
-| **QA-CTZ-03** | Validación de campos obligatorios vacíos | 🔄 |
+Para garantizar reproducibilidad y auditoría técnica de caja negra, cada prueba genera:
 
-### Módulo 4.2: Cliente Nuevo
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-CLN-01** | Carga de formulario, validación de RFC y prevención de duplicados | 🔄 |
-| **QA-CLN-02** | Alta exitosa de cliente comercial (E2E) | 🔄 |
-
-### Módulo 4.3: Contratos Creados
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-CNT-01** | Búsqueda y visualización de detalle de contrato | ❌ |
-| **QA-CNT-02** | Descarga/Exportación de reportes | ❌ |
+1. **Grabación de Video HD (`Reportes/Videos/<Modulo>/<Test>.webm`):** Grabación cuadro por cuadro de la sesión en resolución `1280x720`, organizada por módulo para inspección visual inmediata.
+2. **Playwright Tracing (`Reportes/Traces/<Modulo>/<Test>_trace.zip`):** Snapshot completo del DOM, eventos de red, capturas de pantalla intermedias y llamadas de consola. Inspeccionable con:
+   ```bash
+   pwsh bin/Debug/net9.0/playwright.ps1 show-trace "Reportes/Traces/Smoke/<NombreArchivo>_trace.zip"
+   ```
+3. **Tráfico de Red HTTP (`Reportes/Network/<Modulo>/<Test>_trafico.har`):** Registro HAR con todas las peticiones y respuestas para diagnosticar caídas o errores `500` en microservicios backend.
+4. **Reporte HTML Interactivo (`TestResults/Reporte_*.html`):** Resumen visual de aserciones, tiempos y resultados listo para stakeholders.
 
 ---
 
-## 📈 Módulo 5: Tablero (Deep Dives Funcionales)
-*Pruebas profundas de interacción dentro de las pantallas del menú Tablero (Comisiones y Reportes).*
+## 🚀 Puesta en Marcha y Ejecución
 
-### Módulo 5.1: Comisiones y Reportes
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-TBL-01** | Tablero: Descarga de reporte e integridad de entorno | 🔄 |
-| **QA-TBL-02** | Comisiones: Integridad de datos en todas las comisiones | 🔄 |
-| **QA-TBL-03** | Comisiones: Flujo de descarga Excel y Aclaración | 🔄 |
-| **QA-TBL-04** | Cuánto falta para mis comisiones: Validar Textos Informativos | 🔄 |
-| **QA-TBL-05** | Valida Dominio: Flujos válidos (.com, .com.mx) e inválidos | 🔄 |
-| **QA-TBL-06** | Navegación a Certificación Ventas | 🔄 |
-| **QA-TBL-07** | Validación de Bono Sinergia | 🔄 |
+### Prerrequisitos
+* [.NET SDK 9.0](https://dotnet.microsoft.com/download/dotnet/9.0) instalado.
+* PowerShell 5.1 o PowerShell 7 (pwsh).
+
+### 1. Clonar e Instalar Dependencias
+```bash
+# Restaurar paquetes NuGet y compilar
+dotnet restore
+dotnet build
+
+# Instalar los navegadores de Playwright (solo la primera vez)
+pwsh bin/Debug/net9.0/playwright.ps1 install
+```
+
+### 2. Configurar Credenciales Locales
+Copia las plantillas `.example.json` en `TestData/` hacia sus versiones activas:
+* `TestData/Global_Credentials.example.json` ➔ `TestData/Global_Credentials.json`
+* `TestData/ClienteFijo.example.json` ➔ `TestData/ClienteFijo.json`
+* `TestData/QA_GST_ClientesAprobados.example.json` ➔ `TestData/QA_GST_ClientesAprobados.json`
+
+---
+
+## ⚡ Comandos de Ejecución
+
+### Script Rápido de Smoke Tests (PowerShell)
+Diseñado para la mejor experiencia de desarrollo (*Developer Experience - DX*), corre la suite en **segundo plano (Headless)** y abre automáticamente el reporte al terminar:
+
+```powershell
+# Ejecución estándar (Headless + reporte interactivo en navegador)
+.\run-smoke-tests.ps1
+
+# Ejecutar combinando suites (Smoke + Sanity)
+.\run-smoke-tests.ps1 -Filter "Category=Smoke | Category=Sanity"
+
+# Ejecución desatendida para pipelines de CI/CD
+.\run-smoke-tests.ps1 -NoOpenReport
+```
+
+### Ejecución con `dotnet test` (CLI)
+
+```bash
+# Suite de Smoke con reporte HTML
+dotnet test --filter "Category=Smoke" --logger "html;LogFileName=Reporte_Smoke.html"
+
+# Suite completa
+dotnet test --logger "html;LogFileName=Reporte_Suite_Completa.html"
+
+# Filtrar por módulo específico
+dotnet test --filter "Name~QA_LGN"   # Autenticación
+dotnet test --filter "Name~QA_GST"   # Cotizaciones y Gestión
+dotnet test --filter "Name~QA_CMS"   # Comisiones
+
+# Modo interactivo con navegador visible (Headed + SlowMo para demostraciones)
+$env:HEADED="1"; $env:PLAYWRIGHT_SLOWMO="500"; dotnet test --filter "Category=Smoke"
+```
+
+### Ejecución en JetBrains Rider o Visual Studio
+* Abre `Playwrigt_Demo.sln`.
+* Explora y ejecuta tests visualmente desde la ventana **Unit Tests** (`Alt + 8` en Rider).
+* Soporta depuración paso a paso (*breakpoints*) pausando el navegador y permitiendo inspeccionar variables y el DOM en tiempo real.
 
 ---
 
-## 📚 Módulo 6: Ayudas (Deep Dives Funcionales)
-*Pruebas de interacción, formularios anidados y herramientas visuales dentro del menú Ayudas.*
+## 💡 Habilidades y Buenas Prácticas Demostradas
 
-### Módulo 6.1: Herramientas y Documentación
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-AYD-01** | AppPinbox: Intercepción y validación de descarga de APK | 🔄 |
-| **QA-AYD-02** | Glosario: Navegación y filtro alfabético dinámico | 🔄 |
-| **QA-AYD-03** | Infografías: Manipulación de selectores y carga de imágenes | 🔄 |
-| **QA-AYD-04** | Mapa Mental: Carga de visualizadores complejos | 🔄 |
-| **QA-AYD-05** | Notiventas: Manejo y validación de nueva pestaña (Target='_blank') | 🔄 |
-| **QA-AYD-06** | Performance Sitios ADN: Renderizado de Iframe de PowerBI | 🔄 |
-| **QA-AYD-07** | Preparador Digital: Llenado de formularios y validaciones | 🔄 |
-| **QA-AYD-08** | Proceso de Ventas: Interacción con pestañas/acordeones anidados | 🔄 |
-| **QA-AYD-09** | Productos: Funcionalidad de filtros Checkbox iterativos | 🔄 |
-| **QA-AYD-10** | Herramientas: Visibilidad de enlaces de red (Evitando clicks externos) | 🔄 |
-| **QA-AYD-11** | Velocidad de páginas: Redirección a servicios externos (PageSpeed) | 🔄 |
-
-**Leyenda de Estados:**
-* ✅ **Automatizado y Estable:** Ejecución regular en verde.
-* 🔄 **En Desarrollo / Cuarentena:** Construyéndose o pausado por bug del sistema.
-* ❌ **Pendiente de Desarrollo:** Mapeado para futuras iteraciones.
+* **Frontend Savvy:** Comprensión de SPA en React, manejo de asincronía, manipulación de listeners y solución a race conditions.
+* **Backend & Network Awareness:** Diagnóstico de APIs mediante archivos HAR, análisis de respuestas HTTP y manejo de errores de backend sin código fuente accesible.
+* **Diseño Orientado a Objetos y Limpieza:** Patrón POM estricto, desacoplamiento con DTOs fuertemente tipados y eliminación de dependencias circulares.
+* **Automatización & DX:** Creación de scripts PowerShell para integración rápida y telemetría de tiempos de respuesta en UI.
 
 ---
----
 
-## 📋 PLANTILLA VACÍA PARA NUEVOS MÓDULOS
-
-## [Icono] Módulo X: [Nombre del Módulo]
-*[Breve descripción de lo que cubre este módulo]*
-
-### Módulo X.1: [Sub-módulo]
-| ID | Caso de Prueba | Estado |
-| :--- | :--- | :---: |
-| **QA-XXX-01** | [Descripción de la prueba 1] | ❌ |
-| **QA-XXX-02** | [Descripción de la prueba 2] | ❌ |
+> **Desarrollado por:** Axel  
+> **Rol:** Full Stack Developer (Testing & Software Quality)  
+> **Organización:** Sección Amarilla / Agencia Digital ADN (Servicio Social)  
+> **Licencia:** Proyecto de portafolio técnico con autorización empresarial.

@@ -14,12 +14,15 @@ namespace Playwrigt_Demo.Models;
 /// </summary>
 public class ConfigData
 {
-    [JsonPropertyName("url")]
-    public string Url { get; init; } = string.Empty;
-
     [JsonPropertyName("user")]
-    public string User { get; init; } = string.Empty;
+    public string User { get; set; } = string.Empty;
 
     [JsonPropertyName("password")]
-    public string Password { get; init; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = string.Empty;
+
+    [JsonPropertyName("agenteEsperado")]
+    public string AgenteEsperado { get; set; } = string.Empty;
 }

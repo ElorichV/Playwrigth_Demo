@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace Playwrigt_Demo;
 
+/// <summary>
+/// Valida dos cosas del Dashboard principal: que muestre el nombre del agente en sesión
+/// (<c>Config.AgenteEsperado</c>), y que las tarjetas de estado interactivo (Comercial No
+/// Elaborado / Pendiente) abran su modal y lo cierren limpiamente con Escape.
+/// </summary>
 [TestFixture]
 [Category("Dashboard")]
-[Category("Smoke")]      
-[Category("Alta")]       
-public class QA_PRN_IntegridadDashboardTests : BaseTest 
+[Category("Smoke")]
+[Category("Alta")]
+public class QA_PRN_IntegridadDashboardTests : BaseTest
 {
     [SetUp]
     public async Task SetupDashboard()

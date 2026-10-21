@@ -13,6 +13,12 @@ namespace Playwrigt_Demo.Tests.Menu_Lateral.ML_Dashboard;
 // ---------------------------------------------------------
 // SUITE DE PRUEBAS: MENÚ LATERAL - DASHBOARD (SMOKE)
 // ---------------------------------------------------------
+/// <summary>
+/// Barredor data-driven: recorre los enlaces habilitados de <c>QA_SMK_TableroLinksData.json</c>
+/// y confirma que cada uno navegue a una pantalla con el título esperado y que se pueda regresar
+/// al Dashboard. Es una prueba de humo (Smoke) — solo confirma que la ruta no esté rota, no
+/// valida la lógica de negocio de cada pantalla destino.
+/// </summary>
 [TestFixture]
 [Category("Dashboard")]
 [Category("Smoke")]
@@ -24,7 +30,7 @@ public class QA_SMK_MenuLateral_Dashboard_Tests : BaseTest
         // Navegación base asegurada antes de cada test de la lista
         await LoginDinamico();
         await Page.Locator("#tab-home-1").ClickAsync(new() { Force = true });
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Expect(Page.Locator("#tab-home-1")).ToBeVisibleAsync(); // FIX: NetworkIdle → tab home visible
     }
 
     public static IEnumerable<TestCaseData> LeerLinksTableroMuestreo()
@@ -55,7 +61,7 @@ public class QA_SMK_MenuLateral_Dashboard_Tests : BaseTest
 
         // 3. Validar que la pantalla destino cargó correctamente su título
         LogWriter($"Verificando renderizado del título en destino: {datos.SelectorValidacion}");
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        // FIX: NetworkIdle eliminado — el Expect siguiente ya tiene auto-espera de 45s
         await Expect(Page.Locator(datos.SelectorValidacion).First).ToBeVisibleAsync();
 
         // 4. Retorno seguro al Dashboard

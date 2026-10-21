@@ -8,12 +8,25 @@ namespace Playwrigt_Demo.Tests.Menu_Lateral.ML_Dashboard.ML_Dashboard_Comisiones
 // ---------------------------------------------------------
 // SUITE DE PRUEBAS: DASHBOARD - COMISIONES POR RESULTADOS
 // ---------------------------------------------------------
+/// <summary>
+/// Selecciona el periodo de diciembre y valida que las tarjetas de comisión (Anual, Mensual,
+/// Trimestral, Renovación, Bonos Sinergias) muestren un monto consistente entre el resumen y su
+/// detalle. Bug conocido: para diciembre, ninguna tarjeta llega a renderizar — ver
+/// "Comisiones sin tarjetas" en <c>docs/PROBLEMAS_CONOCIDOS.md</c> antes de asumir que es un
+/// selector desactualizado.
+/// </summary>
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
 [Category("Dashboard")]
 [Category("Funcional")]
 public class QA_CMS_ComisionesResultadoTests : BaseTest
 {
+    [SetUp]
+    public async Task ConfiguracionInicial()
+    {
+        await LoginDinamico();
+        await Page.Locator("#tab-home-1").ClickAsync(new() { Force = true });
+    }
     [Test]
     public async Task QA_CMS_IntegridadDatosTodasLasComisiones()
     {
@@ -25,7 +38,7 @@ public class QA_CMS_ComisionesResultadoTests : BaseTest
 
         // 2. Seleccionar el periodo 12 (Diciembre) para forzar la aparición de la Comisión Anual
         await Page.Locator("#dropPeriods").SelectOptionAsync(new[] { "12" });
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await Expect(Page.Locator(".card, table tbody tr, [class*=tarjeta]").First).ToBeVisibleAsync(new() { Timeout = 20000 }); // FIX: NetworkIdle → espera determinista de tarjetas
 
         // Patrón para extraer moneda: $1,167,285.00 o $0.00
         string regexMoneda = @"\$[0-9]{1,3}(?:,[0-9]{3})*(?:\.[0-9]{2})";
@@ -58,7 +71,7 @@ public class QA_CMS_ComisionesResultadoTests : BaseTest
 
                 // Clic para ver el detalle de ESTA tarjeta en específico
                 await ClickConMonitoreo(tarjeta.GetByRole(AriaRole.Button, new() { Name = "Click aqui para ver detalle" }), $"Ver detalle de {tipo}");
-                await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+                await Expect(Page.Locator("body")).ToBeVisibleAsync(); // FIX: NetworkIdle → el monto se valida en el Expect inmediato siguiente
 
                 // Validación de integridad: Buscamos que el monto exacto exista dentro del contenedor de detalles
                 // Usamos una aserción genérica en el body o contenedor principal para asegurar que el dato cruzó bien
@@ -69,7 +82,7 @@ public class QA_CMS_ComisionesResultadoTests : BaseTest
 
                 // Retorno al grid de tarjetas
                 await ClickConMonitoreo(Page.Locator("#back a, #back").First, "Regresar a reporte de comisiones");
-                await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+                await Expect(Page.Locator(".tarjeta, .card, table tbody tr").First).ToBeVisibleAsync(new() { Timeout = 15000 }); // FIX: esperar que las tarjetas reaparezcan
             }
         }
     }
